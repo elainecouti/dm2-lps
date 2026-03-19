@@ -698,6 +698,18 @@ var UTM_CONT=params.get('utm_content')||'';
 var DEVICE=window.innerWidth<768?'mobile':(window.innerWidth<1024?'tablet':'desktop');
 var startTime=Date.now();
 
+// Classificar origem do trafego
+function getTrafficSource(){
+    if(UTM_SRC)return UTM_MED==='cpc'||UTM_MED==='paid'||UTM_MED==='ppc'?'pago':'pago';
+    var ref=document.referrer||'';
+    if(!ref)return 'direto';
+    if(ref.match(/google\.|bing\.|yahoo\.|duckduckgo\./i))return 'organico';
+    if(ref.match(/facebook\.|instagram\.|fb\.|fbclid/i))return UTM_SRC?'pago':'social_organico';
+    if(ref.match(/t\.co|twitter\.|tiktok\.|youtube\./i))return 'social_organico';
+    return 'referral';
+}
+var TRAFFIC_SOURCE=getTrafficSource();
+
 // Helper pra enviar pro Supabase
 function send(table,data){
     try{
@@ -711,11 +723,19 @@ function send(table,data){
     }catch(e){}
 }
 
+// Mapa unidade → estado
+var ESTADOS={'Anapolis':'GO','Brasilia':'DF','Cachoeiro de Itapemirim':'ES','Campo Grande':'MS',
+'Campos dos Goytacazes':'RJ','Duque de Caxias':'RJ','Colatina':'ES','Cuiaba':'MT','Eunapolis':'BA',
+'Governador Valadares':'MG','Imperatriz':'MA','Jundiai':'SP','Lapa':'SP','Linhares':'ES',
+'Marilia':'SP','Maringa':'PR','Montes Claros':'MG','Osasco':'SP','Parauapebas':'PA','Recife':'PE',
+'Sao Jose do Rio Preto':'SP','Santo Amaro':'SP','Sao Luis':'MA','Vila Velha':'ES','Vitoria':'ES'};
+var ESTADO=ESTADOS[UNIDADE]||'';
+
 // 1. PAGEVIEW
 send('page_events',{
-    session_id:sid,unidade:UNIDADE,evento:'pageview',valor:location.pathname,
+    session_id:sid,unidade:UNIDADE,estado:ESTADO,evento:'pageview',valor:location.pathname,
     utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
-    headline_param:H_PARAM,device:DEVICE,
+    headline_param:H_PARAM,device:DEVICE,traffic_source:TRAFFIC_SOURCE,
     user_agent:navigator.userAgent.substr(0,200),
     referrer:document.referrer.substr(0,200)
 });
@@ -756,9 +776,9 @@ window.addEventListener('scroll',function(){
 function sendExit(){
     var tempoTotal=Math.round((Date.now()-startTime)/1000);
     send('page_events',{
-        session_id:sid,unidade:UNIDADE,evento:'exit',
+        session_id:sid,unidade:UNIDADE,estado:ESTADO,evento:'exit',
         valor:maxScroll+'%|'+tempoTotal+'s',
-        headline_param:H_PARAM,utm_campaign:UTM_CAMP,device:DEVICE
+        headline_param:H_PARAM,utm_campaign:UTM_CAMP,device:DEVICE,traffic_source:TRAFFIC_SOURCE
     });
     // Enviar secoes pendentes
     sections.forEach(function(s){
@@ -799,7 +819,7 @@ document.addEventListener('click',function(e){
 
     // Track WhatsApp clicks como conversao
     if(elemento==='cta_final_wpp'||elemento==='wpp_float'){
-        send('page_events',{session_id:sid,unidade:UNIDADE,evento:'whatsapp_click',valor:elemento,headline_param:H_PARAM,utm_campaign:UTM_CAMP,device:DEVICE});
+        send('page_events',{session_id:sid,unidade:UNIDADE,estado:ESTADO,evento:'whatsapp_click',valor:elemento,headline_param:H_PARAM,utm_campaign:UTM_CAMP,device:DEVICE,traffic_source:TRAFFIC_SOURCE});
     }
 });
 
@@ -809,7 +829,7 @@ setInterval(function(){
     var n=document.querySelectorAll('.chk.on').length;
     if(n!==lastCheckCount&&n>0){
         lastCheckCount=n;
-        send('page_events',{session_id:sid,unidade:UNIDADE,evento:'checklist_count',valor:String(n),headline_param:H_PARAM,device:DEVICE});
+        send('page_events',{session_id:sid,unidade:UNIDADE,estado:ESTADO,evento:'checklist_count',valor:String(n),headline_param:H_PARAM,device:DEVICE,traffic_source:TRAFFIC_SOURCE});
     }
 },2000);
 
@@ -821,7 +841,7 @@ if(quizForm){
         var sintomasN=document.querySelectorAll('.chk.on').length;
         send('quiz_leads',{
             session_id:sid,
-            unidade:UNIDADE,
+            unidade:UNIDADE,estado:ESTADO,traffic_source:TRAFFIC_SOURCE,
             tempo_diabetes:document.getElementById('qTempo')?document.getElementById('qTempo').value:'',
             principal_queixa:document.getElementById('qDor')?document.getElementById('qDor').value:'',
             whatsapp:document.getElementById('qPhone')?document.getElementById('qPhone').value:'',
