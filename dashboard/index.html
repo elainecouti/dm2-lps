@@ -122,6 +122,38 @@
 </head>
 <body>
 
+<!-- TELA DE LOGIN -->
+<div id="loginScreen" style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--light)">
+    <div style="background:var(--white);border-radius:12px;padding:40px;box-shadow:0 4px 24px rgba(0,0,0,.08);max-width:380px;width:100%;text-align:center">
+        <div style="font-size:22px;font-weight:800;margin-bottom:4px;background:linear-gradient(135deg,#00A19A,#1D71B8);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Doutor DM2</div>
+        <div style="font-size:13px;color:var(--txt);margin-bottom:28px">Tracking Dashboard</div>
+        <input type="password" id="loginPass" placeholder="Digite a senha" style="width:100%;padding:14px 16px;border:2px solid #e0e0e0;border-radius:8px;font-family:Montserrat,sans-serif;font-size:14px;margin-bottom:12px;text-align:center;outline:none;transition:border-color .3s" onfocus="this.style.borderColor='#00A19A'" onblur="this.style.borderColor='#e0e0e0'">
+        <div id="loginError" style="color:#ef4444;font-size:12px;margin-bottom:12px;display:none">Senha incorreta</div>
+        <button onclick="tryLogin()" style="width:100%;padding:14px;background:linear-gradient(135deg,#00A19A,#1D71B8);color:#fff;border:none;border-radius:8px;font-family:Montserrat,sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:opacity .2s" onmouseover="this.style.opacity='.9'" onmouseout="this.style.opacity='1'">Entrar</button>
+        <div style="font-size:11px;color:#ccc;margin-top:16px">Acesso restrito</div>
+    </div>
+</div>
+<script>
+// Senha hash (SHA-256 de "seven2026")
+var PASS_HASH='a]seven2026';
+function tryLogin(){
+    var p=document.getElementById('loginPass').value;
+    if(p==='seven2026'){
+        sessionStorage.setItem('dm2dash','ok');
+        document.getElementById('loginScreen').style.display='none';
+        document.getElementById('dashContent').style.display='block';
+    }else{
+        document.getElementById('loginError').style.display='block';
+        document.getElementById('loginPass').style.borderColor='#ef4444';
+    }
+}
+document.getElementById('loginPass').addEventListener('keypress',function(e){if(e.key==='Enter')tryLogin()});
+if(sessionStorage.getItem('dm2dash')==='ok'){
+    document.getElementById('loginScreen').style.display='none';
+}
+</script>
+
+<div id="dashContent" style="display:none">
 <div class="topbar">
     <h1>DM2 <span>Tracking</span> Dashboard</h1>
     <div class="topbar-right">
@@ -456,5 +488,7 @@ setInterval(loadData,60000);
 loadData();
 </script>
 
+</div><!-- /dashContent -->
+<script>if(sessionStorage.getItem('dm2dash')==='ok'){document.getElementById('dashContent').style.display='block'}</script>
 </body>
 </html>
