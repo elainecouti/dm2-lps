@@ -677,5 +677,167 @@ fbq('track', 'PageView');
 })();
 </script>
 
+<script>
+/*  DM2 LP Tracker — envia eventos pro Supabase  */
+(function(){
+var SUPA_URL='https://eeakqgsnhbrzvkwskkgv.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlYWtxZ3NuaGJyenZrd3Nra2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzEzMDgsImV4cCI6MjA4OTUwNzMwOH0.qA5ZbZPxmq62affukWSQT58lmnqaWI1_OWYTCoCfoks';
+
+// Session ID unico
+var sid=sessionStorage.getItem('dm2sid');
+if(!sid){sid='s_'+Math.random().toString(36).substr(2,9)+'_'+Date.now();sessionStorage.setItem('dm2sid',sid)}
+
+// Dados da pagina
+var params=new URLSearchParams(location.search);
+var UNIDADE=document.getElementById('cityName')?document.getElementById('cityName').textContent.trim():'desconhecido';
+var H_PARAM=params.get('h')||'default';
+var UTM_SRC=params.get('utm_source')||'';
+var UTM_MED=params.get('utm_medium')||'';
+var UTM_CAMP=params.get('utm_campaign')||'';
+var UTM_CONT=params.get('utm_content')||'';
+var DEVICE=window.innerWidth<768?'mobile':(window.innerWidth<1024?'tablet':'desktop');
+var startTime=Date.now();
+
+// Helper pra enviar pro Supabase
+function send(table,data){
+    try{
+        var xhr=new XMLHttpRequest();
+        xhr.open('POST',SUPA_URL+'/rest/v1/'+table,true);
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.setRequestHeader('apikey',SUPA_KEY);
+        xhr.setRequestHeader('Authorization','Bearer '+SUPA_KEY);
+        xhr.setRequestHeader('Prefer','return=minimal');
+        xhr.send(JSON.stringify(data));
+    }catch(e){}
+}
+
+// 1. PAGEVIEW
+send('page_events',{
+    session_id:sid,unidade:UNIDADE,evento:'pageview',valor:location.pathname,
+    utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
+    headline_param:H_PARAM,device:DEVICE,
+    user_agent:navigator.userAgent.substr(0,200),
+    referrer:document.referrer.substr(0,200)
+});
+
+// 2. SCROLL TRACKING por secao
+var sections=['hero','sintomas','central','equipe','metodo','comp','deps','faq','quiz','ctaf','cuidadora'];
+var sectionTimers={};
+var sectionSent={};
+
+var scrollObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+        var id=e.target.id||e.target.className.split(' ')[0];
+        if(e.isIntersecting){
+            sectionTimers[id]=Date.now();
+        }else if(sectionTimers[id]&&!sectionSent[id]){
+            var tempo=Math.round((Date.now()-sectionTimers[id])/1000);
+            if(tempo>=2){
+                send('scroll_events',{session_id:sid,unidade:UNIDADE,secao:id,tempo_segundos:tempo,visivel:true});
+                sectionSent[id]=true;
+            }
+        }
+    });
+},{threshold:0.3});
+
+sections.forEach(function(s){
+    var el=document.getElementById(s)||document.querySelector('.'+s);
+    if(el)scrollObs.observe(el);
+});
+
+// 3. MAX SCROLL DEPTH
+var maxScroll=0;
+window.addEventListener('scroll',function(){
+    var pct=Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
+    if(pct>maxScroll)maxScroll=pct;
+});
+
+// Enviar scroll depth ao sair
+function sendExit(){
+    var tempoTotal=Math.round((Date.now()-startTime)/1000);
+    send('page_events',{
+        session_id:sid,unidade:UNIDADE,evento:'exit',
+        valor:maxScroll+'%|'+tempoTotal+'s',
+        headline_param:H_PARAM,utm_campaign:UTM_CAMP,device:DEVICE
+    });
+    // Enviar secoes pendentes
+    sections.forEach(function(s){
+        if(sectionTimers[s]&&!sectionSent[s]){
+            var tempo=Math.round((Date.now()-sectionTimers[s])/1000);
+            if(tempo>=1){
+                send('scroll_events',{session_id:sid,unidade:UNIDADE,secao:s,tempo_segundos:tempo,visivel:true});
+            }
+        }
+    });
+}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')sendExit()});
+window.addEventListener('beforeunload',sendExit);
+
+// 4. CLICK TRACKING
+document.addEventListener('click',function(e){
+    var el=e.target.closest('a,button,.chk');
+    if(!el)return;
+
+    var secao='';
+    var parent=el.closest('section,.hero,.sintomas,.central,.metodo,.comp,.deps,.faq,.quiz,.ctaf,.cuidadora,.equipe,.valor');
+    if(parent)secao=parent.id||parent.className.split(' ')[0];
+
+    var elemento='';
+    if(el.classList.contains('chk'))elemento='checklist_item';
+    else if(el.classList.contains('btn-w'))elemento='cta_primary';
+    else if(el.classList.contains('btn-g'))elemento='cta_secondary';
+    else if(el.classList.contains('hdr-btn'))elemento='cta_header';
+    else if(el.classList.contains('ctaf-btn'))elemento='cta_final_wpp';
+    else if(el.classList.contains('faq-q'))elemento='faq_'+el.textContent.substr(0,40).replace(/[^a-zA-Z0-9]/g,'_');
+    else if(el.closest('.wpp'))elemento='wpp_float';
+    else if(el.classList.contains('qf-submit'))elemento='quiz_submit';
+    else elemento=el.tagName+'_'+secao;
+
+    if(elemento){
+        send('click_events',{session_id:sid,unidade:UNIDADE,elemento:elemento,secao:secao,headline_param:H_PARAM,utm_campaign:UTM_CAMP});
+    }
+
+    // Track WhatsApp clicks como conversao
+    if(elemento==='cta_final_wpp'||elemento==='wpp_float'){
+        send('page_events',{session_id:sid,unidade:UNIDADE,evento:'whatsapp_click',valor:elemento,headline_param:H_PARAM,utm_campaign:UTM_CAMP,device:DEVICE});
+    }
+});
+
+// 5. CHECKLIST counter
+var lastCheckCount=0;
+setInterval(function(){
+    var n=document.querySelectorAll('.chk.on').length;
+    if(n!==lastCheckCount&&n>0){
+        lastCheckCount=n;
+        send('page_events',{session_id:sid,unidade:UNIDADE,evento:'checklist_count',valor:String(n),headline_param:H_PARAM,device:DEVICE});
+    }
+},2000);
+
+// 6. QUIZ SUBMIT — interceptar
+var quizForm=document.getElementById('quizForm');
+if(quizForm){
+    quizForm.addEventListener('submit',function(){
+        var tempoTotal=Math.round((Date.now()-startTime)/1000);
+        var sintomasN=document.querySelectorAll('.chk.on').length;
+        send('quiz_leads',{
+            session_id:sid,
+            unidade:UNIDADE,
+            tempo_diabetes:document.getElementById('qTempo')?document.getElementById('qTempo').value:'',
+            principal_queixa:document.getElementById('qDor')?document.getElementById('qDor').value:'',
+            whatsapp:document.getElementById('qPhone')?document.getElementById('qPhone').value:'',
+            headline_param:H_PARAM,
+            utm_source:UTM_SRC,
+            utm_campaign:UTM_CAMP,
+            utm_content:UTM_CONT,
+            sintomas_marcados:sintomasN,
+            scroll_depth_max:maxScroll,
+            tempo_na_pagina:tempoTotal
+        });
+    });
+}
+
+})();
+
+</script>
 </body>
 </html>
