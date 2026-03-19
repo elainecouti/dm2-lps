@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DM2 Tracking Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{--teal:#00A19A;--blue:#1D71B8;--dark:#184341;--txt:#5a5a5a;--light:#F7F8FA;--white:#fff;--green:#22c55e;--red:#ef4444;--orange:#f59e0b}
+        body{font-family:'Montserrat',sans-serif;background:var(--light);color:var(--dark);min-height:100vh}
+
+        .topbar{background:var(--dark);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+        .topbar h1{font-size:18px;font-weight:800}
+        .topbar h1 span{color:var(--teal)}
+        .topbar-right{display:flex;gap:12px;align-items:center}
+        .topbar select{padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-family:'Montserrat',sans-serif;font-size:13px;font-weight:500}
+        .topbar select option{color:#333;background:#fff}
+        .live-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+        @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+        .topbar-live{display:flex;align-items:center;gap:6px;font-size:12px;color:rgba(255,255,255,.6)}
+        .refresh-btn{background:var(--teal);color:#fff;border:none;padding:8px 16px;border-radius:6px;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+
+        .container{max-width:1200px;margin:0 auto;padding:24px}
+
+        /* KPI CARDS */
+        .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+        .kpi{background:var(--white);border-radius:12px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+        .kpi-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--txt);margin-bottom:8px}
+        .kpi-value{font-size:32px;font-weight:800;color:var(--dark);line-height:1}
+        .kpi-sub{font-size:12px;color:var(--txt);margin-top:6px}
+        .kpi-value.green{color:var(--green)}
+        .kpi-value.orange{color:var(--orange)}
+
+        /* TABLE */
+        .card{background:var(--white);border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,.04);margin-bottom:24px;overflow:hidden}
+        .card-head{padding:20px 24px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+        .card-head h2{font-size:16px;font-weight:700}
+        .card-head span{font-size:12px;color:var(--txt)}
+        table{width:100%;border-collapse:collapse}
+        th{text-align:left;padding:12px 16px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:var(--txt);background:var(--light);border-bottom:1px solid #eee}
+        td{padding:12px 16px;font-size:13px;border-bottom:1px solid #f5f5f5}
+        tr:hover{background:#fafffe}
+        .badge-unit{background:linear-gradient(135deg,#00A19A,#1D71B8);color:#fff;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:600}
+        .bar{height:6px;border-radius:3px;background:#eee;min-width:80px;position:relative}
+        .bar-fill{height:100%;border-radius:3px;background:var(--teal);transition:width .5s}
+        .bar-fill.low{background:var(--red)}
+        .bar-fill.mid{background:var(--orange)}
+
+        /* HEATMAP GRID */
+        .heatmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px;padding:20px 24px}
+        .heat-cell{text-align:center;padding:16px 8px;border-radius:8px;font-size:12px;font-weight:600;transition:all .3s}
+        .heat-cell .heat-val{font-size:20px;font-weight:800;margin-bottom:4px}
+        .heat-cell .heat-lbl{font-size:10px;opacity:.7}
+
+        /* CLICKS TABLE */
+        .clicks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;padding:20px 24px}
+        .click-card{background:var(--light);border-radius:8px;padding:16px;display:flex;justify-content:space-between;align-items:center}
+        .click-card .cc-name{font-size:13px;font-weight:600;color:var(--dark)}
+        .click-card .cc-count{font-size:20px;font-weight:800;color:var(--teal)}
+
+        #loading{text-align:center;padding:60px;font-size:14px;color:var(--txt)}
+
+        @media(max-width:768px){
+            .container{padding:16px}
+            .kpis{grid-template-columns:1fr 1fr}
+            .topbar{flex-direction:column;align-items:flex-start}
+            .kpi-value{font-size:24px}
+            table{font-size:12px}
+            th,td{padding:8px 10px}
+        }
+    </style>
+</head>
+<body>
+
+<div class="topbar">
+    <h1>DM2 <span>Tracking</span> Dashboard</h1>
+    <div class="topbar-right">
+        <div class="topbar-live"><span class="live-dot"></span> Tempo real</div>
+        <select id="filterPeriod">
+            <option value="today">Hoje</option>
+            <option value="7d" selected>Ultimos 7 dias</option>
+            <option value="30d">Ultimos 30 dias</option>
+            <option value="all">Tudo</option>
+        </select>
+        <select id="filterUnit">
+            <option value="all">Todas as unidades</option>
+        </select>
+        <button class="refresh-btn" onclick="loadData()">Atualizar</button>
+    </div>
+</div>
+
+<div class="container">
+    <div id="loading">Carregando dados...</div>
+
+    <div id="content" style="display:none">
+        <!-- KPIs -->
+        <div class="kpis" id="kpis"></div>
+
+        <!-- Tabela por unidade -->
+        <div class="card">
+            <div class="card-head"><h2>Performance por Unidade</h2><span id="periodLabel"></span></div>
+            <div style="overflow-x:auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Unidade</th>
+                            <th>Pageviews</th>
+                            <th>Quiz Leads</th>
+                            <th>WPP Clicks</th>
+                            <th>Conv. Rate</th>
+                            <th>Top Headline</th>
+                            <th>Scroll Medio</th>
+                            <th>Tempo Medio</th>
+                        </tr>
+                    </thead>
+                    <tbody id="unitTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Heatmap de secoes -->
+        <div class="card">
+            <div class="card-head"><h2>Heatmap de Secoes (tempo medio em segundos)</h2></div>
+            <div class="heatmap" id="heatmap"></div>
+        </div>
+
+        <!-- Top cliques -->
+        <div class="card">
+            <div class="card-head"><h2>Top Elementos Clicados</h2></div>
+            <div class="clicks-grid" id="clicksGrid"></div>
+        </div>
+
+        <!-- Headlines performance -->
+        <div class="card">
+            <div class="card-head"><h2>Performance por Headline Dinamica</h2></div>
+            <div style="overflow-x:auto">
+                <table>
+                    <thead><tr><th>Headline</th><th>Pageviews</th><th>WPP Clicks</th><th>Conv.</th><th>Quiz Leads</th></tr></thead>
+                    <tbody id="headlineTable"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Device -->
+        <div class="card">
+            <div class="card-head"><h2>Dispositivos</h2></div>
+            <div class="clicks-grid" id="deviceGrid"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+var SUPA='https://eeakqgsnhbrzvkwskkgv.supabase.co';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlYWtxZ3NuaGJyenZrd3Nra2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzEzMDgsImV4cCI6MjA4OTUwNzMwOH0.qA5ZbZPxmq62affukWSQT58lmnqaWI1_OWYTCoCfoks';
+
+function q(table,query){
+    return fetch(SUPA+'/rest/v1/'+table+'?'+query,{
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}
+    }).then(function(r){return r.json()});
+}
+
+function getDateFilter(){
+    var p=document.getElementById('filterPeriod').value;
+    var d=new Date();
+    if(p==='today'){d.setHours(0,0,0,0)}
+    else if(p==='7d'){d.setDate(d.getDate()-7)}
+    else if(p==='30d'){d.setDate(d.getDate()-30)}
+    else{return ''}
+    return '&created_at=gte.'+d.toISOString();
+}
+
+function getUnitFilter(){
+    var u=document.getElementById('filterUnit').value;
+    if(u==='all')return '';
+    return '&unidade=eq.'+encodeURIComponent(u);
+}
+
+async function loadData(){
+    document.getElementById('loading').style.display='block';
+    document.getElementById('content').style.display='none';
+
+    var df=getDateFilter();
+    var uf=getUnitFilter();
+
+    var [pageEvents,clicks,scrolls,quizLeads]=await Promise.all([
+        q('page_events','select=*&order=created_at.desc&limit=5000'+df+uf),
+        q('click_events','select=*&order=created_at.desc&limit=5000'+df+uf),
+        q('scroll_events','select=*&order=created_at.desc&limit=5000'+df+uf),
+        q('quiz_leads','select=*&order=created_at.desc&limit=5000'+df+uf)
+    ]);
+
+    // Filter out test data
+    pageEvents=pageEvents.filter(function(e){return e.session_id!=='test_001'});
+
+    var pageviews=pageEvents.filter(function(e){return e.evento==='pageview'});
+    var wppClicks=pageEvents.filter(function(e){return e.evento==='whatsapp_click'});
+    var exits=pageEvents.filter(function(e){return e.evento==='exit'});
+
+    // Populate unit filter
+    var unitSelect=document.getElementById('filterUnit');
+    var currentVal=unitSelect.value;
+    var allUnits=[...new Set(pageviews.map(function(e){return e.unidade}))].sort();
+    if(unitSelect.options.length<=1){
+        allUnits.forEach(function(u){
+            var opt=document.createElement('option');opt.value=u;opt.textContent=u;
+            unitSelect.appendChild(opt);
+        });
+    }
+    unitSelect.value=currentVal;
+
+    // KPIs
+    var uniqueSessions=[...new Set(pageviews.map(function(e){return e.session_id}))].length;
+    var convRate=uniqueSessions>0?((wppClicks.length+quizLeads.length)/uniqueSessions*100).toFixed(1):0;
+    var avgScrolls=exits.map(function(e){return parseInt(e.valor)||0});
+    var avgScroll=avgScrolls.length>0?Math.round(avgScrolls.reduce(function(a,b){return a+b},0)/avgScrolls.length):0;
+    var avgTimes=exits.map(function(e){var p=e.valor.split('|');return parseInt(p[1])||0});
+    var avgTime=avgTimes.length>0?Math.round(avgTimes.reduce(function(a,b){return a+b},0)/avgTimes.length):0;
+
+    document.getElementById('kpis').innerHTML=
+        '<div class="kpi"><div class="kpi-label">Pageviews</div><div class="kpi-value">'+pageviews.length+'</div><div class="kpi-sub">'+uniqueSessions+' sessoes unicas</div></div>'+
+        '<div class="kpi"><div class="kpi-label">Quiz Leads</div><div class="kpi-value green">'+quizLeads.length+'</div><div class="kpi-sub">Formularios preenchidos</div></div>'+
+        '<div class="kpi"><div class="kpi-label">WhatsApp Clicks</div><div class="kpi-value green">'+wppClicks.length+'</div><div class="kpi-sub">Cliques no botao WPP</div></div>'+
+        '<div class="kpi"><div class="kpi-label">Taxa Conversao</div><div class="kpi-value '+(parseFloat(convRate)>10?'green':'orange')+'">'+convRate+'%</div><div class="kpi-sub">(quiz+wpp)/sessoes</div></div>'+
+        '<div class="kpi"><div class="kpi-label">Scroll Medio</div><div class="kpi-value">'+avgScroll+'%</div><div class="kpi-sub">Profundidade da pagina</div></div>'+
+        '<div class="kpi"><div class="kpi-label">Tempo Medio</div><div class="kpi-value">'+avgTime+'s</div><div class="kpi-sub">Na pagina</div></div>';
+
+    // Tabela por unidade
+    var unitData={};
+    pageviews.forEach(function(e){
+        if(!unitData[e.unidade])unitData[e.unidade]={pv:0,wpp:0,quiz:0,headlines:{},scrolls:[],times:[]};
+        unitData[e.unidade].pv++;
+        var h=e.headline_param||'default';
+        unitData[e.unidade].headlines[h]=(unitData[e.unidade].headlines[h]||0)+1;
+    });
+    wppClicks.forEach(function(e){if(unitData[e.unidade])unitData[e.unidade].wpp++});
+    quizLeads.forEach(function(e){if(unitData[e.unidade])unitData[e.unidade].quiz++});
+    exits.forEach(function(e){
+        if(!unitData[e.unidade])return;
+        unitData[e.unidade].scrolls.push(parseInt(e.valor)||0);
+        var p=e.valor.split('|');unitData[e.unidade].times.push(parseInt(p[1])||0);
+    });
+
+    var unitRows='';
+    Object.keys(unitData).sort().forEach(function(u){
+        var d=unitData[u];
+        var conv=d.pv>0?((d.wpp+d.quiz)/d.pv*100).toFixed(1):0;
+        var topH=Object.entries(d.headlines).sort(function(a,b){return b[1]-a[1]})[0];
+        var avgS=d.scrolls.length?Math.round(d.scrolls.reduce(function(a,b){return a+b},0)/d.scrolls.length):0;
+        var avgT=d.times.length?Math.round(d.times.reduce(function(a,b){return a+b},0)/d.times.length):0;
+        var barClass=parseFloat(conv)>15?'':parseFloat(conv)>5?'mid':'low';
+        unitRows+='<tr><td><span class="badge-unit">'+u+'</span></td><td>'+d.pv+'</td><td>'+d.quiz+'</td><td>'+d.wpp+'</td><td>'+conv+'% <div class="bar"><div class="bar-fill '+barClass+'" style="width:'+Math.min(conv*3,100)+'%"></div></div></td><td>'+(topH?topH[0]:'—')+'</td><td>'+avgS+'%</td><td>'+avgT+'s</td></tr>';
+    });
+    document.getElementById('unitTable').innerHTML=unitRows||'<tr><td colspan="8" style="text-align:center;padding:32px;color:#999">Nenhum dado ainda. Acesse uma LP pra comecar a rastrear.</td></tr>';
+
+    // Heatmap secoes
+    var secData={};
+    scrolls.forEach(function(e){
+        if(!secData[e.secao])secData[e.secao]={total:0,count:0};
+        secData[e.secao].total+=e.tempo_segundos;
+        secData[e.secao].count++;
+    });
+    var maxSec=0;
+    Object.values(secData).forEach(function(v){var avg=v.count?v.total/v.count:0;if(avg>maxSec)maxSec=avg});
+
+    var heatHTML='';
+    var secOrder=['hero','cuidadora','sintomas','central','equipe','metodo','valor','comp','deps','faq','quiz','ctaf'];
+    secOrder.forEach(function(s){
+        var d=secData[s];
+        if(!d)return;
+        var avg=Math.round(d.total/d.count);
+        var pct=maxSec>0?avg/maxSec:0;
+        var r=Math.round(255*(1-pct));
+        var g=Math.round(200*pct);
+        var bg='rgba(0,161,154,'+Math.max(0.1,pct).toFixed(2)+')';
+        heatHTML+='<div class="heat-cell" style="background:'+bg+';color:'+(pct>0.5?'#fff':'#184341')+'"><div class="heat-val">'+avg+'s</div><div class="heat-lbl">'+s+'</div></div>';
+    });
+    document.getElementById('heatmap').innerHTML=heatHTML||'<div style="padding:20px;color:#999">Sem dados de scroll ainda.</div>';
+
+    // Top cliques
+    var clickData={};
+    clicks.forEach(function(e){clickData[e.elemento]=(clickData[e.elemento]||0)+1});
+    var topClicks=Object.entries(clickData).sort(function(a,b){return b[1]-a[1]}).slice(0,8);
+    var clicksHTML='';
+    topClicks.forEach(function(c){
+        clicksHTML+='<div class="click-card"><div class="cc-name">'+c[0].replace(/_/g,' ')+'</div><div class="cc-count">'+c[1]+'</div></div>';
+    });
+    document.getElementById('clicksGrid').innerHTML=clicksHTML||'<div style="padding:20px;color:#999">Sem cliques ainda.</div>';
+
+    // Headlines
+    var headData={};
+    pageviews.forEach(function(e){
+        var h=e.headline_param||'default';
+        if(!headData[h])headData[h]={pv:0,wpp:0,quiz:0};
+        headData[h].pv++;
+    });
+    wppClicks.forEach(function(e){var h=e.headline_param||'default';if(headData[h])headData[h].wpp++});
+    quizLeads.forEach(function(e){var h=e.headline_param||'default';if(headData[h])headData[h].quiz++});
+    var headRows='';
+    Object.entries(headData).sort(function(a,b){return b[1].pv-a[1].pv}).forEach(function(h){
+        var d=h[1];
+        var conv=d.pv>0?((d.wpp+d.quiz)/d.pv*100).toFixed(1):0;
+        headRows+='<tr><td><strong>'+h[0]+'</strong></td><td>'+d.pv+'</td><td>'+d.wpp+'</td><td>'+conv+'%</td><td>'+d.quiz+'</td></tr>';
+    });
+    document.getElementById('headlineTable').innerHTML=headRows||'<tr><td colspan="5" style="text-align:center;padding:20px;color:#999">Sem dados.</td></tr>';
+
+    // Devices
+    var devData={};
+    pageviews.forEach(function(e){var d=e.device||'unknown';devData[d]=(devData[d]||0)+1});
+    var devHTML='';
+    Object.entries(devData).sort(function(a,b){return b[1]-a[1]}).forEach(function(d){
+        devHTML+='<div class="click-card"><div class="cc-name">'+d[0]+'</div><div class="cc-count">'+d[1]+'</div></div>';
+    });
+    document.getElementById('deviceGrid').innerHTML=devHTML||'<div style="padding:20px;color:#999">Sem dados.</div>';
+
+    // Period label
+    document.getElementById('periodLabel').textContent='Atualizado: '+new Date().toLocaleString('pt-BR');
+
+    document.getElementById('loading').style.display='none';
+    document.getElementById('content').style.display='block';
+}
+
+document.getElementById('filterPeriod').addEventListener('change',loadData);
+document.getElementById('filterUnit').addEventListener('change',loadData);
+
+// Auto refresh a cada 60s
+setInterval(loadData,60000);
+
+// Load
+loadData();
+</script>
+
+</body>
+</html>
