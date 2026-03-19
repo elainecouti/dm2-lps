@@ -103,6 +103,10 @@
         .click-card .cc-name{font-size:12px;font-weight:600;color:var(--dark)}
         .click-card .cc-count{font-size:18px;font-weight:800;color:var(--teal)}
 
+        .clarity-btn{display:inline-flex;align-items:center;gap:4px;background:var(--teal);color:#fff;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;text-decoration:none;white-space:nowrap;transition:all .2s}
+        .clarity-btn:hover{background:var(--dark);transform:translateY(-1px)}
+        .clarity-btn svg{width:12px;height:12px}
+
         #loading{text-align:center;padding:80px;font-size:13px;color:var(--txt)}
 
         @media(max-width:900px){
@@ -179,7 +183,7 @@
             <div style="overflow-x:auto">
                 <table>
                     <thead><tr>
-                        <th>Unidade</th><th>Pageviews</th><th>Fonte</th><th>Quiz</th><th>WPP</th><th>Conv.</th><th>Top Headline</th><th>Scroll</th><th>Tempo</th>
+                        <th>Unidade</th><th>Pageviews</th><th>Fonte</th><th>Quiz</th><th>WPP</th><th>Conv.</th><th>Top Headline</th><th>Scroll</th><th>Tempo</th><th>Clarity</th>
                     </tr></thead>
                     <tbody id="unitTable"></tbody>
                 </table>
@@ -392,6 +396,11 @@ async function loadData(){
         var p=e.valor.split('|');ud[e.unidade].times.push(parseInt(p[1])||0);
     });
 
+    // Mapa unidade -> slug pra links
+    var slugMap={'Anapolis':'anapolis','Brasilia':'brasilia','Cachoeiro de Itapemirim':'cachoeiro','Campo Grande':'campo-grande','Campos dos Goytacazes':'campos-dos-goytacazes','Duque de Caxias':'caxias','Colatina':'colatina','Cuiaba':'cuiaba','Eunapolis':'eunapolis','Governador Valadares':'governador-valadares','Imperatriz':'imperatriz','Jundiai':'jundiai','Lapa':'lapa','Linhares':'linhares','Marilia':'marilia','Maringa':'maringa','Montes Claros':'montes-claros','Osasco':'osasco','Parauapebas':'parauapebas','Recife':'recife','Sao Jose do Rio Preto':'rio-preto','Santo Amaro':'santo-amaro','Sao Luis':'sao-luis','Vila Velha':'vila-velha','Vitoria':'vitoria'};
+    var CLARITY_ID='vye6k98grz';
+    var BASE_URL='https://elainecouti.github.io/dm2-lps/';
+
     var uRows='';
     Object.keys(ud).sort().forEach(function(u){
         var d=ud[u];var conv=d.pv>0?((d.wpp+d.quiz)/d.pv*100).toFixed(1):0;
@@ -401,9 +410,14 @@ async function loadData(){
         var bc=parseFloat(conv)>15?'':parseFloat(conv)>5?'mid':'low';
         var srcTxt=d.pago>0?'<span class="badge-src badge-pago">'+d.pago+' pago</span> ':'';
         srcTxt+=d.org>0?'<span class="badge-src badge-organico">'+d.org+' org</span>':'';
-        uRows+='<tr><td><span class="badge-unit">'+u+'</span></td><td>'+d.pv+'</td><td>'+srcTxt+'</td><td>'+d.quiz+'</td><td>'+d.wpp+'</td><td>'+conv+'%<div class="bar"><div class="bar-fill '+bc+'" style="width:'+Math.min(conv*3,100)+'%"></div></div></td><td>'+(topH?topH[0]:'—')+'</td><td>'+avgS+'%</td><td>'+avgT+'s</td></tr>';
+        var slug=slugMap[u]||u.toLowerCase().replace(/ /g,'-');
+        var lpUrl=encodeURIComponent(BASE_URL+slug+'/');
+        var clarityHeat='https://clarity.microsoft.com/project/'+CLARITY_ID+'/heatmaps?url='+lpUrl;
+        var clarityRec='https://clarity.microsoft.com/project/'+CLARITY_ID+'/recordings?url='+lpUrl;
+        var clarityBtns='<a href="'+clarityHeat+'" target="_blank" class="clarity-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Heatmap</a> <a href="'+clarityRec+'" target="_blank" class="clarity-btn" style="background:var(--purple)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10,8 16,12 10,16"/></svg>Sessões</a>';
+        uRows+='<tr><td><span class="badge-unit">'+u+'</span></td><td>'+d.pv+'</td><td>'+srcTxt+'</td><td>'+d.quiz+'</td><td>'+d.wpp+'</td><td>'+conv+'%<div class="bar"><div class="bar-fill '+bc+'" style="width:'+Math.min(conv*3,100)+'%"></div></div></td><td>'+(topH?topH[0]:'—')+'</td><td>'+avgS+'%</td><td>'+avgT+'s</td><td>'+clarityBtns+'</td></tr>';
     });
-    document.getElementById('unitTable').innerHTML=uRows||'<tr><td colspan="9" style="text-align:center;padding:32px;color:#999">Nenhum dado ainda.</td></tr>';
+    document.getElementById('unitTable').innerHTML=uRows||'<tr><td colspan="10" style="text-align:center;padding:32px;color:#999">Nenhum dado ainda.</td></tr>';
 
     // HEATMAP
     var secData={};
