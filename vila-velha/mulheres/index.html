@@ -695,7 +695,7 @@ var ESTADO=ESTADOS[UNIDADE]||'';
 // Busca IP + cidade + lat/long via API gratuita
 try{
     var geoXhr=new XMLHttpRequest();
-    geoXhr.open('GET','https://ip-api.com/json/?fields=query,city,regionName,lat,lon',true);
+    geoXhr.open('GET','https://ipapi.co/json/',true);
     geoXhr.timeout=5000;
     geoXhr.onload=function(){
         var geo={};
@@ -706,8 +706,8 @@ try{
             headline_param:H_PARAM,device:DEVICE,traffic_source:TRAFFIC_SOURCE,
             user_agent:navigator.userAgent.substr(0,200),
             referrer:document.referrer.substr(0,200),
-            ip:geo.query||'',cidade_real:geo.city||'',estado_real:geo.regionName||'',
-            lat:geo.lat||null,lon:geo.lon||null
+            ip:geo.ip||geo.query||'',cidade_real:geo.city||'',estado_real:geo.region||geo.regionName||'',
+            lat:geo.latitude||geo.lat||null,lon:geo.longitude||geo.lon||null
         });
     };
     geoXhr.onerror=geoXhr.ontimeout=function(){
