@@ -185,18 +185,6 @@ if(sessionStorage.getItem('dm2dash')==='ok'){
 
         <div class="kpis" id="kpis"></div>
 
-        <!-- HEALTH SCORE -->
-        <div class="card" id="healthCard" style="display:none">
-            <div class="card-head"><h2>Score de Saúde por Unidade</h2><span id="healthUpdated"></span></div>
-            <div id="healthGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding:20px"></div>
-            <div style="overflow-x:auto">
-                <table>
-                    <thead><tr><th>Unidade</th><th>Score</th><th>CPL</th><th>Gasto</th><th>Leads Meta</th><th>Leads Zap</th><th>Captura</th><th>Agend.</th><th>Taxa Agend.</th><th>Sem Tag</th></tr></thead>
-                    <tbody id="healthTable"></tbody>
-                </table>
-            </div>
-        </div>
-
         <div class="grid-3">
             <!-- MAPA DO BRASIL -->
             <div class="card">
@@ -324,28 +312,6 @@ function timeAgo(ts){
     if(diff<86400)return Math.floor(diff/3600)+'h atras';
     return Math.floor(diff/86400)+'d atras';
 }
-
-// Health Score
-async function loadHealth(){
-    var scores=await q('health_scores','select=*&order=score.desc');
-    if(!scores||!scores.length){document.getElementById('healthCard').style.display='none';return}
-    document.getElementById('healthCard').style.display='block';
-
-    var gridHTML='';
-    var tableHTML='';
-    scores.forEach(function(s){
-        var cls=s.score>=80?'sc-green':(s.score>=60?'sc-yellow':(s.score>0?'sc-red':'sc-gray'));
-        gridHTML+='<div class="score-card '+cls+'"><div class="sc-score">'+s.score+'</div><div class="sc-name">'+s.unidade+'</div><div class="sc-cpl">CPL R$'+(s.cpl||0).toFixed(2)+'</div></div>';
-
-        var scoreBar='<div class="bar" style="min-width:40px"><div class="bar-fill '+(s.score>=80?'':(s.score>=60?'mid':'low'))+'" style="width:'+s.score+'%"></div></div>';
-        tableHTML+='<tr><td><span class="badge-unit">'+s.unidade+'</span></td><td>'+s.score+'/100 '+scoreBar+'</td><td>R$'+(s.cpl||0).toFixed(2)+'</td><td>R$'+(s.gasto||0).toFixed(0)+'</td><td>'+s.leads_meta+'</td><td>'+s.leads_zap+'</td><td>'+s.captura_pct+'%</td><td>'+s.agendamentos+'</td><td>'+s.taxa_agendamento+'%</td><td>'+s.pct_sem_tag+'%</td></tr>';
-    });
-
-    document.getElementById('healthGrid').innerHTML=gridHTML;
-    document.getElementById('healthTable').innerHTML=tableHTML;
-    document.getElementById('healthUpdated').textContent='Últimos 30 dias';
-}
-loadHealth();
 
 async function loadData(){
     document.getElementById('loading').style.display='block';
