@@ -103,6 +103,16 @@
         .click-card .cc-name{font-size:12px;font-weight:600;color:var(--dark)}
         .click-card .cc-count{font-size:18px;font-weight:800;color:var(--teal)}
 
+        .score-card{text-align:center;padding:16px 10px;border-radius:10px;border:2px solid #e8e8e8;transition:all .3s}
+        .score-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+        .score-card .sc-score{font-size:28px;font-weight:900;line-height:1}
+        .score-card .sc-name{font-size:10px;font-weight:600;color:var(--txt);margin-top:6px;text-transform:uppercase;letter-spacing:.3px}
+        .score-card .sc-cpl{font-size:11px;color:var(--txt);margin-top:2px}
+        .sc-green{border-color:#bbf7d0;background:#f0fdf4}.sc-green .sc-score{color:var(--green)}
+        .sc-yellow{border-color:#fef08a;background:#fefce8}.sc-yellow .sc-score{color:var(--orange)}
+        .sc-red{border-color:#fecaca;background:#fef2f2}.sc-red .sc-score{color:var(--red)}
+        .sc-gray{border-color:#e5e7eb;background:#f9fafb}.sc-gray .sc-score{color:#999}
+
         .clarity-btn{display:inline-flex;align-items:center;gap:4px;background:var(--teal);color:#fff;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:700;text-decoration:none;white-space:nowrap;transition:all .2s}
         .clarity-btn:hover{background:var(--dark);transform:translateY(-1px)}
         .clarity-btn svg{width:12px;height:12px}
@@ -174,6 +184,18 @@ if(sessionStorage.getItem('dm2dash')==='ok'){
     <div id="content" style="display:none">
 
         <div class="kpis" id="kpis"></div>
+
+        <!-- HEALTH SCORE -->
+        <div class="card" id="healthCard" style="display:none">
+            <div class="card-head"><h2>Score de Saúde por Unidade</h2><span id="healthUpdated"></span></div>
+            <div id="healthGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding:20px"></div>
+            <div style="overflow-x:auto">
+                <table>
+                    <thead><tr><th>Unidade</th><th>Score</th><th>CPL</th><th>Gasto</th><th>Leads Meta</th><th>Leads Zap</th><th>Captura</th><th>Agend.</th><th>Taxa Agend.</th><th>Sem Tag</th></tr></thead>
+                    <tbody id="healthTable"></tbody>
+                </table>
+            </div>
+        </div>
 
         <div class="grid-3">
             <!-- MAPA DO BRASIL -->
@@ -302,6 +324,28 @@ function timeAgo(ts){
     if(diff<86400)return Math.floor(diff/3600)+'h atras';
     return Math.floor(diff/86400)+'d atras';
 }
+
+// Health Score
+async function loadHealth(){
+    var scores=await q('health_scores','select=*&order=score.desc');
+    if(!scores||!scores.length){document.getElementById('healthCard').style.display='none';return}
+    document.getElementById('healthCard').style.display='block';
+
+    var gridHTML='';
+    var tableHTML='';
+    scores.forEach(function(s){
+        var cls=s.score>=80?'sc-green':(s.score>=60?'sc-yellow':(s.score>0?'sc-red':'sc-gray'));
+        gridHTML+='<div class="score-card '+cls+'"><div class="sc-score">'+s.score+'</div><div class="sc-name">'+s.unidade+'</div><div class="sc-cpl">CPL R$'+(s.cpl||0).toFixed(2)+'</div></div>';
+
+        var scoreBar='<div class="bar" style="min-width:40px"><div class="bar-fill '+(s.score>=80?'':(s.score>=60?'mid':'low'))+'" style="width:'+s.score+'%"></div></div>';
+        tableHTML+='<tr><td><span class="badge-unit">'+s.unidade+'</span></td><td>'+s.score+'/100 '+scoreBar+'</td><td>R$'+(s.cpl||0).toFixed(2)+'</td><td>R$'+(s.gasto||0).toFixed(0)+'</td><td>'+s.leads_meta+'</td><td>'+s.leads_zap+'</td><td>'+s.captura_pct+'%</td><td>'+s.agendamentos+'</td><td>'+s.taxa_agendamento+'%</td><td>'+s.pct_sem_tag+'%</td></tr>';
+    });
+
+    document.getElementById('healthGrid').innerHTML=gridHTML;
+    document.getElementById('healthTable').innerHTML=tableHTML;
+    document.getElementById('healthUpdated').textContent='Últimos 30 dias';
+}
+loadHealth();
 
 async function loadData(){
     document.getElementById('loading').style.display='block';
