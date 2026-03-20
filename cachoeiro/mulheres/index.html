@@ -319,8 +319,8 @@ fbq('track', 'PageView');
 <section class="hero">
     <div class="container">
         <div class="hero-inner">
-            <h1 class="rv">Você cuida de todo mundo. Mas quem cuida de você?</h1>
-            <p class="hero-sub rv d1">Cansaço que não passa, tonteiras, formigamentos, peso que não sai. Você não precisa aceitar isso como normal. O Método DM2 é um protocolo de 12 semanas focado na <strong>remissão</strong> da diabetes tipo 2. Não só no controle.</p>
+            <h1 class="rv" id="heroH">Você cuida de todo mundo. Mas quem cuida de você?</h1>
+            <p class="hero-sub rv d1" id="heroSub">Cansaço que não passa, tonteiras, formigamentos, peso que não sai. Você não precisa aceitar isso como normal. O Método DM2 é um protocolo de 12 semanas focado na <strong>remissão</strong> da diabetes tipo 2. Não só no controle.</p>
             <div class="badges rv d2">
                 <span class="badge"><strong>12</strong> semanas de protocolo</span>
                 <span class="badge"><strong>50+</strong> unidades no Brasil</span>
@@ -564,6 +564,25 @@ fbq('track', 'PageView');
     });
 
     var p=new URLSearchParams(location.search);
+
+    // Headlines dinâmicas por criativo (?h=)
+    var headlineMap={
+        'cansaco':{titulo:'Cansaço que não passa, mesmo dormindo 8 horas?',sub:'Se você acorda já exausta e o dia mal começou, o problema pode não ser sono. O Método DM2 é um protocolo de 12 semanas focado na <strong>remissão</strong> da diabetes tipo 2.'},
+        'peso':{titulo:'Dieta, exercício e o peso não sai? O problema pode não ser você.',sub:'Quando o metabolismo está travado pela diabetes, emagrecer vira quase impossível. O Método DM2 resolve a causa em 12 semanas.'},
+        'tonteira':{titulo:'Tonteiras e enjoos sem explicação? Pode ser a diabetes.',sub:'Esses sintomas não são "estresse". São sinais metabólicos que podem ser revertidos. O Método DM2 é um protocolo de 12 semanas focado na <strong>remissão</strong>.'},
+        'formigamento':{titulo:'Formigamentos nas mãos e nos pés que não param?',sub:'São sinais de neuropatia diabética. O Método DM2 trabalha circulação, inflamação e nervos em 12 semanas. Não só a glicose.'},
+        'emocional':{titulo:'Ansiedade, sono ruim e emocional descontrolado? Pode ter raiz metabólica.',sub:'Inflamação crônica da diabetes afeta o cérebro. Não é frescura. O Método DM2 trata o metabolismo inteiro em 12 semanas.'},
+        'sexual':{titulo:'Secura vaginal e dor na relação? A diabetes pode ser a causa.',sub:'64% das mulheres diabéticas relatam redução na resposta sexual. O Método DM2 trata o metabolismo inteiro em 12 semanas.'},
+        'remedio':{titulo:'Toma Glifage há anos e nada muda?',sub:'Se o remédio só "controla" mas os sintomas continuam, falta resolver a causa. O Método DM2 busca a <strong>remissão</strong> da diabetes tipo 2 em 12 semanas.'},
+        'vista':{titulo:'Vista embaçada que vai e volta? Pode ser a diabetes.',sub:'A retinopatia diabética afeta a visão antes do que você imagina. O Método DM2 atua no metabolismo inteiro em 12 semanas.'},
+        'mae':{titulo:'Você veio buscar pra sua mãe? E pra você, quem cuida?',sub:'7 em cada 10 pessoas que procuram o Método DM2 são mulheres. Muitas buscam pra família. Mas chegou a hora de cuidar de você também.'}
+    };
+    var angulo=p.get('h');
+    if(angulo&&headlineMap[angulo]){
+        document.getElementById('heroH').innerHTML=headlineMap[angulo].titulo;
+        document.getElementById('heroSub').innerHTML=headlineMap[angulo].sub;
+    }
+
     var c=p.get('cidade');
     if(c)document.getElementById('cityName').textContent=decodeURIComponent(c);
 
@@ -611,6 +630,7 @@ var UTM_SRC=params.get('utm_source')||'';
 var UTM_MED=params.get('utm_medium')||'';
 var UTM_CAMP=params.get('utm_campaign')||'';
 var UTM_CONT=params.get('utm_content')||'';
+var UTM_TERM=params.get('utm_term')||'';
 var DEVICE=window.innerWidth<768?'mobile':(window.innerWidth<1024?'tablet':'desktop');
 var startTime=Date.now();
 
