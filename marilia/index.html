@@ -669,18 +669,35 @@ fbq('track', 'PageView');
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t){window.scrollTo({top:t.getBoundingClientRect().top+pageYOffset-document.querySelector('.hdr').offsetHeight-16,behavior:'smooth'})}})});
 
-    // Quiz form → WhatsApp
-    document.getElementById('quizForm').addEventListener('submit',function(e){
-        e.preventDefault();
-        var tempo=document.getElementById('qTempo').value;
-        var dor=document.getElementById('qDor').value;
-        var phone=document.getElementById('qPhone').value;
-        var msg='Olá, quero avaliar meu caso pro Método DM2.\n\nTempo de diabetes: '+tempo+'\nPrincipal queixa: '+dor+'\nMeu WhatsApp: '+phone;
-        if(typeof fbq==='function')fbq('track','Lead');window.open('https://wa.me/5514998301401?text='+encodeURIComponent(msg),'_blank');
-    });
+    // Quiz form → WhatsApp (handler com origem abaixo)
 })();
 </script>
 
+<script>
+(function(){
+    var h=new URLSearchParams(window.location.search).get('h')||'geral';
+    var origem='LP-homens/'+h;
+    // Atualizar links estáticos wa.me
+    document.querySelectorAll('a[href*="wa.me"]').forEach(function(a){
+        a.href=a.href.replace('%5Bvia%20site%5D','%5B'+encodeURIComponent(origem)+'%5D')
+                      .replace('[via site]','['+origem+']');
+    });
+    // Atualizar msg do quiz form
+    var form=document.getElementById('quizForm');
+    if(form){
+        var origSubmit=form.onsubmit;
+        form.addEventListener('submit',function(e){
+            e.preventDefault();
+            var tempo=document.getElementById('qTempo').value;
+            var dor=document.getElementById('qDor').value;
+            var phone=document.getElementById('qPhone').value;
+            var msg='Olá, quero avaliar meu caso pro Método DM2. ['+origem+']\n\nTempo de diabetes: '+tempo+'\nPrincipal queixa: '+dor+'\nMeu WhatsApp: '+phone;
+            if(typeof fbq==='function')fbq('track','Lead');
+            window.open('https://wa.me/5514998301401?text='+encodeURIComponent(msg),'_blank');
+        });
+    }
+})();
+</script>
 <script>
 /*  DM2 LP Tracker — envia eventos pro Supabase  */
 (function(){
@@ -706,6 +723,7 @@ var UTM_SRC=params.get('utm_source')||'';
 var UTM_MED=params.get('utm_medium')||'';
 var UTM_CAMP=params.get('utm_campaign')||'';
 var UTM_CONT=params.get('utm_content')||'';
+var UTM_TERM=params.get('utm_term')||'';
 var DEVICE=window.innerWidth<768?'mobile':(window.innerWidth<1024?'tablet':'desktop');
 var startTime=Date.now();
 
@@ -858,9 +876,23 @@ document.addEventListener('click',function(e){
         send('click_events',{session_id:sid,unidade:UNIDADE,elemento:elemento,secao:secao,headline_param:H_PARAM,utm_campaign:UTM_CAMP});
     }
 
-    // Track WhatsApp clicks como conversao
+    // Track WhatsApp clicks como conversao — com UTMs completos e telefone
     if(elemento==='cta_final_wpp'||elemento==='wpp_float'){
-        send('page_events',{session_id:sid,unidade:UNIDADE,estado:ESTADO,evento:'whatsapp_click',valor:elemento,headline_param:H_PARAM,utm_campaign:UTM_CAMP,device:DEVICE,traffic_source:TRAFFIC_SOURCE});
+        // Extrair telefone do link wa.me
+        var wppLink=el.closest('a')?el.closest('a').href:(el.href||'');
+        var wppPhone='';
+        var phoneMatch=wppLink.match(/wa\.me\/(\d+)/);
+        if(phoneMatch)wppPhone=phoneMatch[1];
+
+        send('page_events',{
+            session_id:sid,unidade:UNIDADE,estado:ESTADO,
+            evento:'whatsapp_click',valor:wppPhone||elemento,
+            headline_param:H_PARAM,
+            utm_source:UTM_SRC,utm_medium:UTM_MED,
+            utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
+            device:DEVICE,traffic_source:TRAFFIC_SOURCE,
+            referrer:document.referrer.substr(0,200)
+        });
     }
 });
 
