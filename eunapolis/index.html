@@ -25,12 +25,8 @@
         .d5{transition-delay:.5s}.d6{transition-delay:.6s}.d7{transition-delay:.7s}.d8{transition-delay:.8s}
 
         /* CITY BAR */
-        .citybar{background:var(--forest);color:rgba(255,255,255,.6);text-align:center;padding:11px 20px;font-size:13px;font-weight:500}
-        .citybar b{color:var(--teal);text-transform:uppercase;letter-spacing:1.5px}
-
-        /* URGENCIA BAR */
-        .urgencia{background:var(--teal);color:#fff;text-align:center;padding:10px 20px;font-size:13px;font-weight:600;letter-spacing:.3px}
-        .urgencia span{background:rgba(255,255,255,.2);border-radius:50px;padding:2px 12px;font-weight:800;margin-left:6px}
+        .citybar{background:var(--forest);color:#fff;text-align:center;padding:13px 20px;font-size:16px;font-weight:700;letter-spacing:.5px}
+        .citybar b{color:var(--teal);text-transform:uppercase;letter-spacing:1.5px;font-size:17px}
 
         /* HEADER */
         .hdr{background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:13px 0;position:sticky;top:0;z-index:100;border-bottom:1px solid transparent;transition:all .3s}
@@ -252,8 +248,7 @@
         @media(max-width:768px){
             .container{padding:0 16px}
             .sintomas,.central,.metodo,.comp,.deps,.faq,.quiz,.ctaf,.equipe,.valor,.social-bar{padding:60px 0}
-            .citybar{font-size:11px;padding:9px 14px}
-            .urgencia{font-size:11px;padding:8px 14px}
+            .citybar{font-size:13px;padding:10px 14px}
             .hdr{padding:11px 0}.logo{font-size:17px}.hdr-btn{padding:8px 16px;font-size:11px}
             .hero{padding:36px 0 50px}
             .hero h1{font-size:26px}
@@ -313,7 +308,6 @@ fbq('track', 'PageView');
 <body>
 
 <div class="citybar">Doutor DM2 <b id="cityName">Eunapolis</b></div>
-<div class="urgencia">Vagas limitadas por unidade. Próxima turma abrindo em <span id="mesAtual">abril</span></div>
 
 <header class="hdr" id="hdr">
     <div class="container">
@@ -618,11 +612,6 @@ fbq('track', 'PageView');
 
     // Header
     window.addEventListener('scroll',function(){document.getElementById('hdr').classList.toggle('fix',scrollY>40)});
-
-    // Mes dinamico na barra de urgencia
-    var meses=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-    var prox=new Date();prox.setMonth(prox.getMonth()+1);
-    document.getElementById('mesAtual').textContent=meses[prox.getMonth()];
 
     // Headline dinamica por criativo
     var urlParams=new URLSearchParams(window.location.search);
