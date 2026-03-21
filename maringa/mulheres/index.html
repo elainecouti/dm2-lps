@@ -7,7 +7,8 @@
     <meta name="description" content="Cansaço, tonteiras, peso que não sai? O Método DM2 é um protocolo de 12 semanas focado na remissão da diabetes tipo 2.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
     <!-- Meta Pixel -->
     <script>
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -30,7 +31,7 @@
             --grad-hero:linear-gradient(40deg,#00A19A 39%,#1D71B8 100%);
         }
         html{scroll-behavior:smooth}
-        body{font-family:'Montserrat',sans-serif;color:var(--txt);line-height:1.7;overflow-x:hidden}
+        body{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--txt);line-height:1.7;overflow-x:hidden}
         .container{max-width:1080px;margin:0 auto;padding:0 24px}
 
         .rv{opacity:0;transform:translateY(32px);transition:all .7s cubic-bezier(.16,1,.3,1)}
@@ -39,8 +40,8 @@
         .d5{transition-delay:.5s}.d6{transition-delay:.6s}.d7{transition-delay:.7s}.d8{transition-delay:.8s}
         .d9{transition-delay:.9s}.d10{transition-delay:1s}
 
-        .citybar{background:var(--forest);color:rgba(255,255,255,.6);text-align:center;padding:11px 20px;font-size:13px;font-weight:500;letter-spacing:.5px}
-        .citybar b{color:var(--teal);text-transform:uppercase;letter-spacing:1.5px}
+        .citybar{background:var(--forest);color:#fff;text-align:center;padding:13px 20px;font-size:16px;font-weight:700;letter-spacing:.5px}
+        .citybar b{color:var(--teal);text-transform:uppercase;letter-spacing:1.5px;font-size:17px}
 
         .hdr{background:rgba(255,255,255,.96);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:13px 0;position:sticky;top:0;z-index:100;border-bottom:1px solid transparent;transition:all .3s}
         .hdr.fix{box-shadow:0 2px 16px rgba(0,0,0,.07);border-bottom-color:rgba(0,161,154,.1)}
@@ -50,9 +51,8 @@
         .hdr-btn:hover{background:var(--teal)}
 
         .hero{background:var(--grad-hero);color:#fff;padding:72px 0 88px;position:relative;overflow:hidden}
-        .hero::before{content:'';position:absolute;top:-40%;right:-12%;width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 70%);border-radius:50%;animation:fl 9s ease-in-out infinite}
-        .hero::after{content:'';position:absolute;bottom:-30%;left:-8%;width:420px;height:420px;background:radial-gradient(circle,rgba(29,113,184,.25),transparent 70%);border-radius:50%;animation:fl 11s ease-in-out infinite reverse}
-        @keyframes fl{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-16px) scale(1.04)}}
+        .hero::before{content:'';position:absolute;top:-40%;right:-12%;width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 70%);border-radius:50%}
+        .hero::after{content:'';position:absolute;bottom:-30%;left:-8%;width:420px;height:420px;background:radial-gradient(circle,rgba(29,113,184,.25),transparent 70%);border-radius:50%}
         .hero-inner{position:relative;z-index:2;max-width:680px}
         .hero h1{font-size:44px;font-weight:800;line-height:1.15;margin-bottom:22px}
         .hero-sub{font-size:17px;color:rgba(255,255,255,.85);line-height:1.75;margin-bottom:36px;max-width:580px}
@@ -319,14 +319,14 @@ fbq('track', 'PageView');
 <section class="hero">
     <div class="container">
         <div class="hero-inner">
-            <h1 class="rv" id="heroH">Você cuida de todo mundo. Mas quem cuida de você?</h1>
-            <p class="hero-sub rv d1" id="heroSub">Cansaço que não passa, tonteiras, formigamentos, peso que não sai. Você não precisa aceitar isso como normal. O Método DM2 é um protocolo de 12 semanas focado na <strong>remissão</strong> da diabetes tipo 2. Não só no controle.</p>
-            <div class="badges rv d2">
+            <h1 id="heroH">Você cuida de todo mundo. Mas quem cuida de você?</h1>
+            <p class="hero-sub" id="heroSub">Cansaço que não passa, tonteiras, formigamentos, peso que não sai. Você não precisa aceitar isso como normal. O Método DM2 é um protocolo de 12 semanas focado na <strong>remissão</strong> da diabetes tipo 2. Não só no controle.</p>
+            <div class="badges">
                 <span class="badge"><strong>12</strong> semanas de protocolo</span>
                 <span class="badge"><strong>50+</strong> unidades no Brasil</span>
                 <span class="badge"><strong>17</strong> estados com presença</span>
             </div>
-            <div class="cta-row rv d3">
+            <div class="cta-row">
                 <a href="#ctaf" class="btn-w"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.243-1.214l-.252-.149-2.868.852.852-2.868-.149-.252A8 8 0 1112 20z"/></svg> Quero conhecer o método</a>
                 <a href="#sintomas" class="btn-g">Será que é pra mim? <span>&#8595;</span></a>
             </div>
@@ -514,7 +514,7 @@ fbq('track', 'PageView');
     </div>
 </footer>
 
-<a href="https://wa.me/554499519120?text=Ol%C3%A1%2C%20quero%20conhecer%20o%20M%C3%A9todo%20DM2" class="wpp" target="_blank">
+<a href="https://wa.me/554499519120?text=Ol%C3%A1%2C%20quero%20conhecer%20o%20M%C3%A9todo%20DM2" class="wpp" target="_blank" aria-label="Fale conosco no WhatsApp">
     <div class="wpp-circle"><span class="wpp-ring"></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.243-1.214l-.252-.149-2.868.852.852-2.868-.149-.252A8 8 0 1112 20z"/></svg></div>
 </a>
 
