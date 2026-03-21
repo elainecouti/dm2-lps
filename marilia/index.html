@@ -681,7 +681,7 @@ fbq('track', 'PageView');
             var dor=document.getElementById('qDor').value;
             var phone=document.getElementById('qPhone').value;
             var msg='Olá, quero avaliar meu caso pro Método DM2. ['+origem+']\n\nTempo de diabetes: '+tempo+'\nPrincipal queixa: '+dor+'\nMeu WhatsApp: '+phone;
-            if(typeof fbq==='function')fbq('track','Lead');
+            if(typeof fbq==='function'){fbq('track','Lead');fbq('track','CompleteRegistration');}
             window.open('https://wa.me/5514998301401?text='+encodeURIComponent(msg),'_blank');
         });
     }
@@ -866,7 +866,7 @@ document.addEventListener('click',function(e){
     }
 
     // Track WhatsApp clicks como conversao — com UTMs completos e telefone
-    if(elemento==='cta_final_wpp'||elemento==='wpp_float'){
+    if(elemento==='cta_final_wpp'||elemento==='wpp_float'){if(typeof fbq==='function')fbq('track','Contact');
         // Extrair telefone do link wa.me
         var wppLink=el.closest('a')?el.closest('a').href:(el.href||'');
         var wppPhone='';
