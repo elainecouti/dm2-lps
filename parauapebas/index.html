@@ -7,7 +7,8 @@
     <meta name="description" content="Cansaço, formigamentos, disfunção erétil? O Método DM2 é um protocolo de 12 semanas focado na remissão da diabetes tipo 2.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         :root{
@@ -17,7 +18,7 @@
             --grad-hero:linear-gradient(40deg,#00A19A 39%,#1D71B8 100%);
         }
         html{scroll-behavior:smooth}
-        body{font-family:'Montserrat',sans-serif;color:var(--txt);line-height:1.7;overflow-x:hidden}
+        body{font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--txt);line-height:1.7;overflow-x:hidden}
         .container{max-width:1080px;margin:0 auto;padding:0 24px}
         .rv{opacity:0;transform:translateY(32px);transition:all .7s cubic-bezier(.16,1,.3,1)}
         .rv.vis{opacity:1;transform:none}
@@ -38,8 +39,7 @@
 
         /* HERO */
         .hero{background:var(--grad-hero);color:#fff;padding:72px 0 88px;position:relative;overflow:hidden}
-        .hero::before{content:'';position:absolute;top:-40%;right:-12%;width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 70%);border-radius:50%;animation:fl 9s ease-in-out infinite}
-        @keyframes fl{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(20px,-16px) scale(1.04)}}
+        .hero::before{content:'';position:absolute;top:-40%;right:-12%;width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,.07),transparent 70%);border-radius:50%}
         .hero-inner{position:relative;z-index:2;max-width:680px}
         .hero h1{font-size:44px;font-weight:800;line-height:1.15;margin-bottom:22px}
         .hero h1 .dyn{display:block}
@@ -320,14 +320,14 @@ fbq('track', 'PageView');
 <section class="hero">
     <div class="container">
         <div class="hero-inner">
-            <h1 class="rv"><span class="dyn" id="heroH">Você toma remédio todo dia e a diabetes só piora?</span></h1>
-            <p class="hero-sub rv d1" id="heroSub">O Método DM2 é um protocolo de 12 semanas com acompanhamento semanal, criado para buscar a <strong>remissão</strong> da diabetes tipo 2. Não só controlar a glicose.</p>
-            <div class="badges rv d2">
+            <h1><span class="dyn" id="heroH">Você toma remédio todo dia e a diabetes só piora?</span></h1>
+            <p class="hero-sub" id="heroSub">O Método DM2 é um protocolo de 12 semanas com acompanhamento semanal, criado para buscar a <strong>remissão</strong> da diabetes tipo 2. Não só controlar a glicose.</p>
+            <div class="badges">
                 <span class="badge"><strong>12</strong> semanas de protocolo</span>
                 <span class="badge"><strong>50+</strong> unidades no Brasil</span>
                 <span class="badge"><strong>17</strong> estados com presença</span>
             </div>
-            <div class="cta-row rv d3">
+            <div class="cta-row">
                 <a href="#quiz" class="btn-w"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.243-1.214l-.252-.149-2.868.852.852-2.868-.149-.252A8 8 0 1112 20z"/></svg> Quero avaliar meu caso</a>
                 <a href="#sintomas" class="btn-g">Será que é pra mim? <span>&#8595;</span></a>
             </div>
@@ -541,7 +541,7 @@ fbq('track', 'PageView');
             <p class="rv d1">Responda 3 perguntas rápidas. Nossa equipe analisa seu perfil e entra em contato pelo WhatsApp.</p>
             <form class="quiz-form rv d2" id="quizForm">
                 <div class="qf-group">
-                    <label class="qf-label">Há quanto tempo você tem diabetes?</label>
+                    <label class="qf-label" for="qTempo">Há quanto tempo você tem diabetes?</label>
                     <select class="qf-select" id="qTempo" required>
                         <option value="">Selecione</option>
                         <option value="pre">Sou pré-diabético</option>
@@ -552,7 +552,7 @@ fbq('track', 'PageView');
                     </select>
                 </div>
                 <div class="qf-group">
-                    <label class="qf-label">Qual seu principal incômodo hoje?</label>
+                    <label class="qf-label" for="qDor">Qual seu principal incômodo hoje?</label>
                     <select class="qf-select" id="qDor" required>
                         <option value="">Selecione</option>
                         <option value="cansaco">Cansaço e falta de energia</option>
@@ -564,7 +564,7 @@ fbq('track', 'PageView');
                     </select>
                 </div>
                 <div class="qf-group">
-                    <label class="qf-label">Seu WhatsApp (com DDD)</label>
+                    <label class="qf-label" for="qPhone">Seu WhatsApp (com DDD)</label>
                     <input type="tel" class="qf-input" id="qPhone" placeholder="(27) 99999-9999" required>
                 </div>
                 <button type="submit" class="qf-submit">
@@ -602,7 +602,7 @@ fbq('track', 'PageView');
     </div>
 </footer>
 
-<a href="https://wa.me/559492111949?text=Ol%C3%A1%2C%20quero%20conhecer%20o%20M%C3%A9todo%20DM2" class="wpp" target="_blank"><div class="wpp-circle"><span class="wpp-ring"></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.243-1.214l-.252-.149-2.868.852.852-2.868-.149-.252A8 8 0 1112 20z"/></svg></div></a>
+<a href="https://wa.me/559492111949?text=Ol%C3%A1%2C%20quero%20conhecer%20o%20M%C3%A9todo%20DM2" class="wpp" target="_blank" aria-label="Fale conosco no WhatsApp"><div class="wpp-circle"><span class="wpp-ring"></span><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.89.525 3.66 1.438 5.168L2 22l4.832-1.438A9.955 9.955 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18a8 8 0 01-4.243-1.214l-.252-.149-2.868.852.852-2.868-.149-.252A8 8 0 1112 20z"/></svg></div></a>
 
 <script>
 (function(){
