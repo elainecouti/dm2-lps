@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vivasemdiabetestipo2.com.br/sitemap.xml
+
+# Bloquear paginas internas (gestao, dashboard)
+Disallow: /gestao/
+Disallow: /dashboard/
