@@ -704,6 +704,10 @@ if(localStorage.getItem('dm2_exclude')==='true')return;
 // Pra voltar a ser contabilizada: acesse com ?include=seven
 if(params.get('include')==='seven'){localStorage.removeItem('dm2_exclude')}
 
+// === EXCLUSAO DE BOTS ===
+var ua=navigator.userAgent||'';
+if(/bot|crawl|spider|slurp|facebookexternalhit|Facebot|MetaInspector|WhatsApp|Googlebot|bingbot|GTmetrix|Lighthouse|HeadlessChrome|PhantomJS|Prerender|Screaming Frog/i.test(ua))return;
+
 var SUPA_URL='https://eeakqgsnhbrzvkwskkgv.supabase.co';
 var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlYWtxZ3NuaGJyenZrd3Nra2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzEzMDgsImV4cCI6MjA4OTUwNzMwOH0.qA5ZbZPxmq62affukWSQT58lmnqaWI1_OWYTCoCfoks';
 
@@ -763,6 +767,9 @@ try{
     geoXhr.onload=function(){
         var geo={};
         try{geo=JSON.parse(geoXhr.responseText)}catch(e){}
+        // Ignorar acessos de datacenters (bots Meta/Google que não se identificam no UA)
+        var cc=geo.country_code||geo.countryCode||'';
+        if(cc&&cc!=='BR')return;
         send('page_events',{
             session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'pageview',valor:location.pathname,
             utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
