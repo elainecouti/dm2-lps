@@ -762,45 +762,45 @@ var ESTADO=ESTADOS[UNIDADE]||'';
 
 // 1. PAGEVIEW com geolocalização do IP
 // Busca IP + cidade + lat/long via API gratuita
-try{
-    var geoXhr=new XMLHttpRequest();
-    geoXhr.open('GET','https://ipapi.co/json/',true);
-    geoXhr.timeout=5000;
-    geoXhr.onload=function(){
-        var geo={};
-        try{geo=JSON.parse(geoXhr.responseText)}catch(e){}
-        // Ignorar acessos de datacenters (bots Meta/Google que não se identificam no UA)
-        var cc=geo.country_code||geo.countryCode||'';
-        if(cc&&cc!=='BR')return;
-        send('page_events',{
-            session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'pageview',valor:location.pathname,
-            utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
-            headline_param:H_PARAM,device:DEVICE,traffic_source:TRAFFIC_SOURCE,
-            user_agent:navigator.userAgent.substr(0,200),
-            referrer:document.referrer.substr(0,200),
-            ip:geo.ip||geo.query||'',cidade_real:geo.city||'',estado_real:geo.region||geo.regionName||'',
-            lat:geo.latitude||geo.lat||null,lon:geo.longitude||geo.lon||null
-        });
-    };
-    geoXhr.onerror=geoXhr.ontimeout=function(){
-        send('page_events',{
-            session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'pageview',valor:location.pathname,
-            utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
-            headline_param:H_PARAM,device:DEVICE,traffic_source:TRAFFIC_SOURCE,
-            user_agent:navigator.userAgent.substr(0,200),
-            referrer:document.referrer.substr(0,200)
-        });
-    };
-    geoXhr.send();
-}catch(e){
+function sendPageview(geo){
+    geo=geo||{};
+    var cc=geo.country_code||geo.countryCode||'';
+    if(cc&&cc!=='BR')return;
     send('page_events',{
-        session_id:sid,unidade:UNIDADE,estado:ESTADO,evento:'pageview',valor:location.pathname,
+        session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'pageview',valor:location.pathname,
         utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
         headline_param:H_PARAM,device:DEVICE,traffic_source:TRAFFIC_SOURCE,
         user_agent:navigator.userAgent.substr(0,200),
-        referrer:document.referrer.substr(0,200)
+        referrer:document.referrer.substr(0,200),
+        ip:geo.ip||geo.query||'',cidade_real:geo.city||'',estado_real:geo.region||geo.regionName||'',
+        lat:geo.latitude||geo.lat||null,lon:geo.longitude||geo.lon||null
     });
 }
+function tryGeoFallback(){
+    try{
+        var fb=new XMLHttpRequest();
+        fb.open('GET','https://ip-api.com/json/?fields=status,country,countryCode,regionName,city,lat,lon,query',true);
+        fb.timeout=4000;
+        fb.onload=function(){
+            var geo={};try{geo=JSON.parse(fb.responseText)}catch(e){}
+            if(geo.status==='success'){geo.country_code=geo.countryCode;geo.ip=geo.query;geo.region=geo.regionName;geo.latitude=geo.lat;geo.longitude=geo.lon}
+            sendPageview(geo);
+        };
+        fb.onerror=fb.ontimeout=function(){sendPageview({})};
+        fb.send();
+    }catch(e){sendPageview({})}
+}
+try{
+    var geoXhr=new XMLHttpRequest();
+    geoXhr.open('GET','https://ipapi.co/json/',true);
+    geoXhr.timeout=4000;
+    geoXhr.onload=function(){
+        var geo={};try{geo=JSON.parse(geoXhr.responseText)}catch(e){}
+        if(geo.ip||geo.city){sendPageview(geo)}else{tryGeoFallback()}
+    };
+    geoXhr.onerror=geoXhr.ontimeout=function(){tryGeoFallback()};
+    geoXhr.send();
+}catch(e){tryGeoFallback()}
 
 // 2. SCROLL TRACKING por secao
 var sections=['hero','sintomas','central','equipe','metodo','comp','deps','faq','quiz','ctaf','cuidadora'];
@@ -840,7 +840,7 @@ function sendExit(){
     send('page_events',{
         session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'exit',
         valor:maxScroll+'%|'+tempoTotal+'s',
-        headline_param:H_PARAM,utm_campaign:UTM_CAMP,device:DEVICE,traffic_source:TRAFFIC_SOURCE
+        headline_param:H_PARAM,utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,device:DEVICE,traffic_source:TRAFFIC_SOURCE
     });
     // Enviar secoes pendentes
     sections.forEach(function(s){
@@ -873,14 +873,14 @@ document.addEventListener('click',function(e){
     else if(el.classList.contains('faq-q'))elemento='faq_'+el.textContent.substr(0,40).replace(/[^a-zA-Z0-9]/g,'_');
     else if(el.closest('.wpp'))elemento='wpp_float';
     else if(el.classList.contains('qf-submit'))elemento='quiz_submit';
-    else elemento=el.tagName+'_'+secao;
+    else elemento=el.tagName.toLowerCase()+'_'+(secao||'page')+'_'+(el.textContent||'').substr(0,20).replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
 
     if(elemento){
         send('click_events',{session_id:sid,unidade:UNIDADE,elemento:elemento,secao:secao,headline_param:H_PARAM,utm_campaign:UTM_CAMP});
     }
 
     // Track WhatsApp clicks como conversao — com UTMs completos e telefone
-    if(elemento==='cta_final_wpp'||elemento==='wpp_float'){if(typeof fbq==='function')fbq('track','Contact');fbq('track','Lead');
+    if(elemento==='cta_final_wpp'||elemento==='wpp_float'){if(typeof fbq==='function')fbq('track','Contact');
         // Extrair telefone do link wa.me
         var wppLink=el.closest('a')?el.closest('a').href:(el.href||'');
         var wppPhone='';
@@ -905,7 +905,7 @@ setInterval(function(){
     var n=document.querySelectorAll('.chk.on').length;
     if(n!==lastCheckCount&&n>0){
         lastCheckCount=n;
-        send('page_events',{session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'checklist_count',valor:String(n),headline_param:H_PARAM,device:DEVICE,traffic_source:TRAFFIC_SOURCE});
+        send('page_events',{session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'checklist_count',valor:String(n),headline_param:H_PARAM,utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,device:DEVICE,traffic_source:TRAFFIC_SOURCE});
     }
 },2000);
 
