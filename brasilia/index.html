@@ -880,7 +880,7 @@ document.addEventListener('click',function(e){
     }
 
     // Track WhatsApp clicks como conversao — com UTMs completos e telefone
-    if(elemento==='cta_final_wpp'||elemento==='wpp_float'){if(typeof fbq==='function')fbq('track','Contact');
+    if(elemento==='cta_final_wpp'||elemento==='wpp_float'){if(typeof fbq==='function')fbq('track','Contact');fbq('track','Lead');
         // Extrair telefone do link wa.me
         var wppLink=el.closest('a')?el.closest('a').href:(el.href||'');
         var wppPhone='';
