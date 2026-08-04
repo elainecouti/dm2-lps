@@ -329,7 +329,17 @@ src="https://www.facebook.com/tr?id=277513728431211&ev=PageView&noscript=1"></no
         </div>
       </fieldset>
 
-      <div class="erro" id="erro">Responda as 3 perguntas para continuar.</div>
+      <fieldset>
+        <legend><span class="num">4</span>Quando você quer fazer a avaliação?</legend>
+        <div class="ops">
+          <label class="op"><input type="radio" name="q4" value="Essa semana, se tiver vaga" data-quente="1"><span>Essa semana, se tiver vaga</span></label>
+          <label class="op"><input type="radio" name="q4" value="Semana que vem" data-quente="1"><span>Semana que vem</span></label>
+          <label class="op"><input type="radio" name="q4" value="Ainda esse mês" data-quente="1"><span>Ainda esse mês</span></label>
+          <label class="op"><input type="radio" name="q4" value="Só quero informação por enquanto" data-quente="0"><span>Só quero informação por enquanto</span></label>
+        </div>
+      </fieldset>
+
+      <div class="erro" id="erro">Responda as 4 perguntas para continuar.</div>
       <button type="submit" class="btn wpp" id="enviar">Ver se meu caso tem perfil →</button>
       <p class="sob">Você fala direto com a nossa equipe. Sem robô.</p>
     </form>
@@ -405,8 +415,9 @@ src="https://www.facebook.com/tr?id=277513728431211&ev=PageView&noscript=1"></no
     var q1 = form.querySelector('input[name="q1"]:checked');
     var q2 = form.querySelector('input[name="q2"]:checked');
     var q3 = form.querySelector('input[name="q3"]:checked');
+    var q4 = form.querySelector('input[name="q4"]:checked');
 
-    if(!q1 || !q2 || !q3){
+    if(!q1 || !q2 || !q3 || !q4){
       erro.classList.add("on");
       erro.scrollIntoView({block:"center"});
       return;
@@ -417,9 +428,14 @@ src="https://www.facebook.com/tr?id=277513728431211&ev=PageView&noscript=1"></no
       "Olá! Respondi as 3 perguntas no site e quero saber se o meu caso tem perfil para o Método Reverse.\n\n" +
       "1. " + q1.value + "\n" +
       "2. " + q2.value + "\n" +
-      "3. " + q3.value;
+      "3. " + q3.value + "\n" +
+      "4. Quando quer fazer: " + q4.value;
 
-    if(typeof fbq==="function"){fbq("track","Lead");}
+    var quente = q4.getAttribute("data-quente") === "1";
+    if(typeof fbq==="function"){
+      if(quente){ fbq("track","Lead",{content_name:"triagem-com-data",content_category:q4.value}); }
+      else { fbq("trackCustom","LeadInformativo",{content_category:q4.value}); }
+    }
     window.open("https://wa.me/" + WPP + "?text=" + encodeURIComponent(msg), "_blank");
   });
 })();
