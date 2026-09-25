@@ -67,8 +67,8 @@ p.lead::first-letter{float:left;font-family:'Playfair Display',serif;font-size:5
 .fora{background:#5c1f1f;border:1px solid #8d3a3a;color:#ffe3e3;font-family:Inter,sans-serif;font-size:14px;line-height:1.5;padding:12px 14px;border-radius:7px;margin:4px 0 12px}
 .btn.off{background:#c8ccc9;color:#6b706d;box-shadow:none;pointer-events:none}
 
-.so-a,.so-b,.so-c{display:none}
-body.v-a .so-a,body.v-b .so-b,body.v-c .so-c{display:block}
+.so-a,.so-b,.so-c,.so-d{display:none}
+body.v-a .so-a,body.v-b .so-b,body.v-c .so-c,body.v-d .so-d{display:block}
 body.v-c .folha{padding-bottom:26px}
 body.v-c .conv{font-family:Inter,sans-serif}
 .promessa{font-family:'Playfair Display',serif;font-weight:900;font-size:37px;line-height:1.08;letter-spacing:-.7px;margin:4px 0 12px}
@@ -111,6 +111,21 @@ body.v-c .conv{font-family:Inter,sans-serif}
 .duvida{text-align:center;margin:12px 0 0}
 .duvida a{font-family:Inter,sans-serif;font-size:15px;color:#14302b;text-decoration:underline}
 .duvida small{display:block;font-family:Inter,sans-serif;font-size:12.5px;color:#5d5a4e;margin-top:4px}
+
+/* Variante D = a C, com UMA pergunta antes de tudo. A pergunta toca a dor nº1 declarada pelo
+   lead da rede ("tomo remédio e não baixa", 19% em Imperatriz) e não pede nenhum dado pessoal. */
+body.v-d .so-c,body.v-d .so-d{display:block}
+.portao{margin:6px 0 4px}
+.portao .pg-h{font-family:'Playfair Display',serif;font-size:31px;font-weight:900;line-height:1.14;letter-spacing:-.5px;margin-bottom:8px}
+.portao .pg-s{font-family:Inter,sans-serif;font-size:16.5px;line-height:1.5;color:#3b3a31;margin-bottom:16px}
+.pg-ops{display:grid;gap:9px}
+.pg-op{font-family:Inter,sans-serif;font-size:17px;font-weight:600;text-align:left;padding:15px 16px;background:#fffdf7;border:2px solid #14302b;border-radius:10px;cursor:pointer}
+.pg-op:active{background:#14302b;color:#f6f3ea}
+.pg-nota{font-family:Inter,sans-serif;font-size:13px;color:#5d5a4e;margin-top:12px}
+body.v-d.trancado .depois-portao{display:none}
+body.v-d .portao-ok{display:none}
+body.v-d:not(.trancado) .portao{display:none}
+body.v-d:not(.trancado) .portao-ok{display:block;background:#14302b;color:#f2f0e6;font-family:Inter,sans-serif;font-size:15px;line-height:1.5;padding:13px 15px;border-radius:9px;margin:4px 0 16px}
 </style>
 </head>
 <body>
@@ -128,7 +143,20 @@ body.v-c .conv{font-family:Inter,sans-serif}
     <img src="fachada.jpg" alt="Unidade Doutor DM2 Vitória, no Bento Ferreira" loading="eager">
     <figcaption>A unidade de Vitória fica na Rua Hélio Marconi, 42, no Bento Ferreira. Atende só diabetes tipo 2 e pré-diabetes.</figcaption>
   </figure>
-<div class="conv so-c">
+<div class="portao so-d">
+    <div class="pg-h">Antes de continuar, uma pergunta.</div>
+    <div class="pg-s">Há quanto tempo você toma remédio para o diabetes tipo 2?</div>
+    <div class="pg-ops">
+      <button class="pg-op" data-r="Faz menos de 1 ano que tomo remédio">Faz menos de 1 ano</button>
+      <button class="pg-op" data-r="Tomo remédio há 1 a 5 anos">De 1 a 5 anos</button>
+      <button class="pg-op" data-r="Tomo remédio há mais de 5 anos">Mais de 5 anos</button>
+      <button class="pg-op" data-r="Já uso insulina">Já uso insulina</button>
+      <button class="pg-op" data-r="Ainda não tomo remédio">Ainda não tomo remédio</button>
+    </div>
+    <div class="pg-nota">Sem cadastro e sem pedir seus dados. É só para você ver o que faz sentido no seu caso.</div>
+  </div>
+  <div class="portao-ok so-d" id="portaoOk"></div>
+  <div class="conv so-c depois-portao">
   <div class="promessa">O objetivo não é fazer sua glicose baixar no exame.
     É <em>diminuir a quantidade de remédio que você toma</em>.</div>
   <div class="sub-p">Se faz anos que você toma o comprimido certinho, corta o açúcar, faz o exame
@@ -167,14 +195,14 @@ body.v-c .conv{font-family:Inter,sans-serif}
 
   <p class="so-a so-b">Na Doutor DM2 de Vitória, no Bento Ferreira, a avaliação começa por um exame completo, não pela glicemia isolada. A partir dele a equipe monta um plano por pessoa (alimentação, suplementação e o que mais fizer sentido no caso) e o paciente volta toda semana para ajustar o que não funcionou. É esse retorno curto que aparece nas avaliações públicas da unidade.</p>
 
-  <div class="tira">
+  <div class="tira depois-portao">
     <figure><img src="prova1.jpg" alt="Paciente com o certificado Eu Venci a Diabetes Tipo 2" loading="lazy"><figcaption>Marco Antônio, com a glicada em 5,1</figcaption></figure>
     <figure><img src="prova2.jpg" alt="Paciente com o certificado Eu Venci a Diabetes Tipo 2" loading="lazy"><figcaption>O cansaço e o formigamento foram os primeiros a sair</figcaption></figure>
     <figure><img src="prova3.jpg" alt="Paciente com o certificado Eu Venci a Diabetes Tipo 2" loading="lazy"><figcaption>“O que melhorou foi tudo”</figcaption></figure>
     <figure><img src="prova4.jpg" alt="Pacientes com o certificado Eu Venci a Diabetes Tipo 2" loading="lazy"><figcaption>Glicada em 5,3, com a equipe da clínica</figcaption></figure>
   </div>
-  <div class="creditof">Pacientes da rede Doutor DM2, que autorizaram o uso da imagem.</div>
-  <div class="transf so-c">
+  <div class="creditof depois-portao">Pacientes da rede Doutor DM2, que autorizaram o uso da imagem.</div>
+  <div class="depois-portao transf so-c">
     <h3>O que costuma mudar nos primeiros 90 dias</h3>
     <div class="obs">É o que o acompanhamento persegue. Cada caso é um caso, e a avaliação existe
     justamente para dizer o que dá para esperar no seu.</div>
@@ -195,7 +223,7 @@ body.v-c .conv{font-family:Inter,sans-serif}
       todo mundo. Quem tem perfil descobre isso na avaliação, com exame, antes de decidir
       qualquer coisa.</div></div>
   </div>
-  <div class="caixa">
+  <div class="depois-portao caixa">
     <h3>Avaliações no Google · nota 5,0 com 13 avaliações</h3>
     <div class="rev"><div class="est">★★★★★</div><p>“Estou me sentindo muito melhor, bem mais disposta, e já estou diminuindo as doses do meu remédio! As meninas da clínica são maravilhosas, super simpáticas! Recomendo muito a clínica!”</p><div class="quem">Deusmira · avaliação no Google</div></div>
     <div class="rev"><div class="est">★★★★★</div><p>“Desde que comecei, há 1 mês, já estou me sentindo 70% melhor, ou até mais. Meu sono melhorou, os inchaços acabaram, os pés e as mãos pararam de formigar, ansiedade está melhor. Aqui me sinto acolhido.”</p><div class="quem">Elias · avaliação no Google</div></div>
@@ -205,7 +233,7 @@ body.v-c .conv{font-family:Inter,sans-serif}
 <p class="so-a so-b"><b>Para quem é.</b> O acompanhamento é para quem tem diabetes tipo 2 ou pré-diabetes e quer sair do controle pelo número. Nem todo mundo tem perfil, e é justamente isso que a avaliação inicial define, antes de qualquer proposta.</p>
   <p class="so-a so-b"><b>Como começa.</b> Você fala com a equipe no WhatsApp, conta seu caso em poucas linhas e recebe as datas disponíveis. A avaliação é presencial, na unidade de Vitória.</p>
 
-<div class="caixa so-b so-c" id="agendar">
+<div class="depois-portao caixa so-b so-c" id="agendar">
     <h3>O que acontece na avaliação</h3>
     <ol class="passos">
       <li>A equipe ouve seu caso e olha os exames que você já tem, mesmo os antigos.</li>
@@ -216,7 +244,7 @@ body.v-c .conv{font-family:Inter,sans-serif}
     <div class="preco">A avaliação custa <b>R$ 150</b>, com tudo isso incluso. Se você não tiver
     perfil, a equipe diz na hora, e não existe proposta nenhuma depois.</div>
   </div>
-<div class="form-b so-b so-c" id="formB">
+<div class="depois-portao form-b so-b so-c" id="formB">
     <span class="selo-f">Último passo</span>
     <h3>Responda 4 perguntas e a equipe já recebe o seu caso</h3>
     <div class="sub-f">Leva menos de 30 segundos. A sua preferência de dia e horário vai escrita na mensagem, então a equipe já responde com as datas.</div>
@@ -245,7 +273,7 @@ body.v-c .conv{font-family:Inter,sans-serif}
     <div class="aviso-f">A equipe confirma a disponibilidade no WhatsApp. A avaliação é presencial,
     na Rua Hélio Marconi, 42, Bento Ferreira.</div>
   </div>
-  <div class="cta">
+  <div class="depois-portao cta">
     <a class="btn so-a" id="btnWpp" href="#">Falar com a equipe no WhatsApp<small>A gente confirma endereço, horário e o que levar</small></a>
     <a class="btn so-b so-c" id="btnWppB" href="#">Ver os horários desta semana<small>A equipe responde com as datas livres da unidade de Vitória</small></a>
   </div>
@@ -276,10 +304,11 @@ body.v-c .conv{font-family:Inter,sans-serif}
      agendamento no CRM, já que o ZapClinic não recebe parâmetro de URL. */
   var VAR=null;
   try{VAR=localStorage.getItem('lp_var')}catch(e){}
-  if(['a','b','c'].indexOf(p.get('v'))>=0){VAR=p.get('v').toUpperCase()}
-  if(['A','B','C'].indexOf(VAR)<0){VAR=['A','B','C'][Math.floor(Math.random()*3)]}
+  if(['a','b','c','d'].indexOf(p.get('v'))>=0){VAR=p.get('v').toUpperCase()}
+  if(['A','B','C','D'].indexOf(VAR)<0){VAR=['A','B','C','D'][Math.floor(Math.random()*4)]}
   try{localStorage.setItem('lp_var',VAR)}catch(e){}
   document.body.classList.add('v-'+VAR.toLowerCase());
+  if(VAR==='D'){document.body.classList.add('trancado')}
   window.__LP_VAR=VAR;
   var msg=p.get('msg')||('[LP-'+VAR+'] Li a matéria e quero agendar minha avaliação na Doutor DM2 Vitória.');
   var url='https://wa.me/5527995788381?text='+encodeURIComponent(msg);
@@ -319,7 +348,79 @@ body.v-c .conv{font-family:Inter,sans-serif}
       grupo.querySelectorAll('.op').forEach(function(x){x.setAttribute('aria-pressed','false')});
       op.setAttribute('aria-pressed','true');
       resp[grupo.dataset.campo]=op.dataset.val||op.textContent.trim();
-      document.querySelectorAll('a[href="#agendar"], .mini-cta').forEach(function(a){
+      atualizar();
+      try{ if(window.dm2Track) window.dm2Track('form_option',{campo:grupo.dataset.campo,valor:resp[grupo.dataset.campo],variante:VAR}); }catch(e){}
+    });
+  });
+
+  /* Variante D: UMA pergunta antes de tudo. Não pede dado pessoal, toca a dor nº1 declarada
+     pelo lead da rede ("tomo remédio e não baixa") e a resposta segue na mensagem do WhatsApp. */
+  var RESP_PORTAO=null;
+  var ECO={
+    'Faz menos de 1 ano que tomo remédio':'Começou há pouco tempo, e é justamente aí que dá para mudar o rumo antes de a dose começar a subir.',
+    'Tomo remédio há 1 a 5 anos':'Nesse tempo a maioria já viu a dose aumentar pelo menos uma vez. Não precisa ser assim daqui para frente.',
+    'Tomo remédio há mais de 5 anos':'Mais de cinco anos tomando, e o número voltando parecido. O problema quase nunca é falta de esforço: é o alvo.',
+    'Já uso insulina':'Quem usa insulina costuma ouvir que não tem volta. Tem gente na rede que diminuiu a dose, e é disso que esta página trata.',
+    'Ainda não tomo remédio':'Esse é o melhor momento para agir, e o menos aproveitado: dá para tratar a causa antes de o remédio entrar.'
+  };
+  document.querySelectorAll('.pg-op').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      RESP_PORTAO=btn.dataset.r;
+      var eco=document.getElementById('portaoOk');
+      if(eco) eco.textContent=ECO[RESP_PORTAO]||'';
+      document.body.classList.remove('trancado');
+      try{ if(window.dm2Track) window.dm2Track('portao',{variante:VAR,resposta:RESP_PORTAO}); }catch(e){}
+      window.scrollTo({top:0,behavior:'smooth'});
+      atualizar();
+    });
+  });
+
+  function montarMsg(){
+    if(VAR==='A') return msg;
+    var l=['[LP-'+VAR+'] Vi a matéria e quero agendar minha avaliação na Doutor DM2 Vitória.'];
+    if(RESP_PORTAO) l.push('• '+RESP_PORTAO);
+    if(resp.caso)   l.push('• '+resp.caso);
+    if(resp.regiao) l.push('• Estou em: '+resp.regiao);
+    if(resp.dia||resp.turno){
+      l.push('• Prefiro: '+[resp.dia,resp.turno&&resp.turno.toLowerCase()].filter(Boolean).join(', '));
+    }
+    return l.join('\n');
+  }
+
+  /* Regra da unidade: atende presencialmente SÓ Vitória e Serra. Quem marca "Outra cidade"
+     recebe o aviso e o botão trava. As 4 respostas são obrigatórias. */
+  var OBRIG=['caso','regiao','dia','turno'];
+  function atualizar(){
+    var u='https://wa.me/5527995788381?text='+encodeURIComponent(montarMsg());
+    [b,bB].forEach(function(el){ if(el) el.href=u; });
+    if(VAR==='A'||!bB) return;
+    var fora   = resp.regiao==='Outra cidade';
+    var faltam = OBRIG.filter(function(k){ return !resp[k]; }).length;
+    var aviso  = document.getElementById('avisoFora');
+    if(aviso) aviso.hidden = !fora;
+    var feitas=OBRIG.length-faltam;
+    var pb=document.getElementById('progBar'), pt=document.getElementById('progTxt');
+    if(pb) pb.style.width=(feitas/OBRIG.length*100)+'%';
+    if(pt) pt.textContent=feitas+' de '+OBRIG.length;
+    OBRIG.forEach(function(k){
+      var g=document.querySelector('.form-b .ops[data-campo="'+k+'"]');
+      if(g&&g.parentElement) g.parentElement.classList.toggle('ok', !!resp[k]);
+    });
+    if(fora){
+      bB.classList.add('off');
+      bB.firstChild.nodeValue='Esta unidade não atende a sua cidade';
+      bB.querySelector('small').textContent='O atendimento é presencial, em Vitória e na Serra';
+      try{ if(window.dm2Track) window.dm2Track('fora_de_area',{variante:VAR}); }catch(e){}
+      return;
+    }
+    bB.classList.toggle('off', faltam>0);
+    bB.firstChild.nodeValue = faltam>0 ? 'Responda as 4 perguntas acima' : 'Ver os horários desta semana';
+    bB.querySelector('small').textContent = faltam>0
+      ? (faltam===1 ? 'Falta 1 resposta' : 'Faltam '+faltam+' respostas')
+      : 'Você já vai com a sua preferência escrita na mensagem';
+  }
+
+  document.querySelectorAll('a[href="#agendar"], .mini-cta').forEach(function(a){
     a.addEventListener('click',function(ev){
       var alvo=document.getElementById('formB');
       if(!alvo||!alvo.offsetParent) return;
@@ -329,69 +430,18 @@ body.v-c .conv{font-family:Inter,sans-serif}
       try{ if(window.dm2Track) window.dm2Track('cta_para_form',{variante:VAR}); }catch(e){}
     });
   });
-  /* Quem ainda não decidiu NÃO é barrado: 78% do funil da rede se perde justamente entre
-     engajar e pedir para agendar. Ele passa marcado como [LP-x-DUVIDA], para a equipe saber
-     que é conversa e não agendamento, e para dar para medir qual dos dois caminhos agenda mais. */
+
   var ld=document.getElementById('linkDuvida');
   if(ld){
     ld.addEventListener('click',function(ev){
       ev.preventDefault();
       var t='[LP-'+VAR+'-DUVIDA] Vi a matéria da Doutor DM2 Vitória e queria tirar uma dúvida antes de agendar.';
+      if(RESP_PORTAO) t+='\n• '+RESP_PORTAO;
       if(resp.caso) t+='\n• '+resp.caso;
       if(resp.regiao) t+='\n• Estou em: '+resp.regiao;
       try{ if(window.dm2Track) window.dm2Track('whatsapp_click_duvida',{variante:VAR}); }catch(e){}
       window.open('https://wa.me/5527995788381?text='+encodeURIComponent(t),'_blank');
     });
-  }
-  atualizar();
-      try{ if(window.dm2Track) window.dm2Track('form_option',{campo:grupo.dataset.campo,valor:resp[grupo.dataset.campo],variante:VAR}); }catch(e){}
-    });
-  });
-
-  function montarMsg(){
-    if(VAR==='A') return msg;
-    var l=['[LP-'+VAR+'] Vi a matéria e quero agendar minha avaliação na Doutor DM2 Vitória.'];
-    if(resp.caso)   l.push('• '+resp.caso);
-    if(resp.regiao) l.push('• Estou em: '+resp.regiao);
-    if(resp.dia||resp.turno){
-      l.push('• Prefiro: '+[resp.dia,resp.turno&&resp.turno.toLowerCase()].filter(Boolean).join(', '));
-    }
-    return l.join('\n');
-  }
-  /* Regra da unidade (Elaine, 25/09): atende presencialmente SÓ Vitória e Serra. Quem marca
-     "Outra cidade" recebe o aviso e o botão trava — mandar esse lead para o WhatsApp só produz
-     a conversa que a franqueada já reclama ("lead de fora"). E as 4 respostas são obrigatórias. */
-  var OBRIG=['caso','regiao','dia','turno'];
-  function atualizar(){
-    var u='https://wa.me/5527995788381?text='+encodeURIComponent(montarMsg());
-    [b,bB].forEach(function(el){ if(el) el.href=u; });
-    if(VAR==='A'||!bB) return;   // o formulário serve B e C
-    var fora   = resp.regiao==='Outra cidade';
-    var faltam = OBRIG.filter(function(k){ return !resp[k]; }).length;
-    var aviso  = document.getElementById('avisoFora');
-    if(aviso) aviso.hidden = !fora;
-    if(fora){
-      bB.classList.add('off');
-      bB.firstChild.nodeValue='Esta unidade não atende a sua cidade';
-      bB.querySelector('small').textContent='O atendimento é presencial, em Vitória e na Serra';
-      try{ if(window.dm2Track) window.dm2Track('fora_de_area',{variante:VAR}); }catch(e){}
-      return;
-    }
-    /* progresso visível: o lead precisa VER o quanto falta, senão o formulário some no fim */
-    var feitas=OBRIG.length-faltam;
-    var pb=document.getElementById('progBar'), pt=document.getElementById('progTxt');
-    if(pb) pb.style.width=(feitas/OBRIG.length*100)+'%';
-    if(pt) pt.textContent=feitas+' de '+OBRIG.length;
-    OBRIG.forEach(function(k){
-      var g=document.querySelector('.form-b .ops[data-campo="'+k+'"]');
-      if(g&&g.parentElement) g.parentElement.classList.toggle('ok', !!resp[k]);
-    });
-    bB.classList.toggle('off', faltam>0);
-    bB.firstChild.nodeValue = faltam>0 ? 'Responda as 4 perguntas acima'
-                                       : 'Ver os horários desta semana';
-    bB.querySelector('small').textContent = faltam>0
-      ? (faltam===1 ? 'Falta 1 resposta' : 'Faltam '+faltam+' respostas')
-      : 'Você já vai com a sua preferência escrita na mensagem';
   }
 
   [b,bB].forEach(function(el){
