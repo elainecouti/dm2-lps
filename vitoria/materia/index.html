@@ -138,6 +138,21 @@ t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
 document,'script','https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '277513728431211');
 fbq('track', 'PageView');
+/* ViewContent é o evento que a campanha otimiza (CONTACT ainda está indisponível por falta de
+   volume no pixel). Dispara só depois de LEITURA REAL: 15s na página ou 40% de rolagem. Assim o
+   algoritmo aprende com quem leu, não com quem abriu e fechou. */
+(function(){
+  var ja=false;
+  function marcar(motivo){
+    if(ja)return; ja=true;
+    try{ fbq('track','ViewContent',{content_name:'lp-materia-vitoria',motivo:motivo}); }catch(e){}
+  }
+  setTimeout(function(){marcar('15s')},15000);
+  window.addEventListener('scroll',function(){
+    var h=document.body.scrollHeight-window.innerHeight;
+    if(h>0 && window.scrollY/h>=0.4) marcar('40pct');
+  },{passive:true});
+})();
 </script>
 </head>
 <body>
