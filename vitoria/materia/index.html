@@ -127,6 +127,18 @@ body.v-d .portao-ok{display:none}
 body.v-d:not(.trancado) .portao{display:none}
 body.v-d:not(.trancado) .portao-ok{display:block;background:#14302b;color:#f2f0e6;font-family:Inter,sans-serif;font-size:15px;line-height:1.5;padding:13px 15px;border-radius:9px;margin:4px 0 16px}
 </style>
+<script>
+/* Pixel Meta — sem ele a LP não manda PageView nem Contact, e a campanha não tem como otimizar.
+   ⚠️ O pixel pertence à CA01 (act_224198366875813). Para uma campanha na CA03 usar isto,
+   o pixel precisa ser compartilhado com a conta no Gerenciador de Negócios. */
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '277513728431211');
+fbq('track', 'PageView');
+</script>
 </head>
 <body>
 <div class="pub">Conteúdo publicitário · Doutor DM2 Diabetes Vitória</div>
@@ -370,6 +382,7 @@ body.v-d:not(.trancado) .portao-ok{display:block;background:#14302b;color:#f2f0e
       if(eco) eco.textContent=ECO[RESP_PORTAO]||'';
       document.body.classList.remove('trancado');
       try{ if(window.dm2Track) window.dm2Track('portao',{variante:VAR,resposta:RESP_PORTAO}); }catch(e){}
+      try{ if(typeof fbq==='function') fbq('trackCustom','RespondeuPortao',{variante:VAR}); }catch(e){}
       window.scrollTo({top:0,behavior:'smooth'});
       atualizar();
     });
@@ -449,6 +462,7 @@ body.v-d:not(.trancado) .portao-ok{display:block;background:#14302b;color:#f2f0e
     el.href=url;
     el.addEventListener('click',function(){
       try{ if(window.dm2Track) window.dm2Track('whatsapp_click',{variante:VAR,respostas:resp}); }catch(e){}
+      try{ if(typeof fbq==='function') fbq('track','Contact',{variante:VAR}); }catch(e){}
     });
   });
   atualizar();
