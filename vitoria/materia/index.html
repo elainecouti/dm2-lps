@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diário da Saúde · Diabetes tipo 2 em Vitória</title>
+<meta name="description" content="Por que a glicose não baixa mesmo com remédio, dieta e exame em dia, e o que a unidade de Vitória faz diferente.">
+<meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#efece4;color:#14150f;font-family:'Source Serif 4',Georgia,serif;line-height:1.62;font-size:18px}
+.pub{background:#14150f;color:#e8e2d2;text-align:center;font-family:Inter,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:7px 12px}
+.folha{max-width:760px;margin:0 auto;background:#f6f3ea;box-shadow:0 0 40px rgba(0,0,0,.13);padding:26px 22px 40px}
+.top{display:flex;justify-content:space-between;font-family:Inter,sans-serif;font-size:11px;color:#5d5a4e;border-bottom:1px solid #14150f;padding-bottom:7px;flex-wrap:wrap;gap:6px}
+.masthead{text-align:center;padding:16px 0 10px;border-bottom:3px double #14150f;margin-bottom:18px}
+.masthead h1{font-family:'Playfair Display',serif;font-size:40px;font-weight:900;letter-spacing:-.5px}
+.masthead .tag{font-family:Inter,sans-serif;font-size:10.5px;letter-spacing:4px;text-transform:uppercase;color:#5d5a4e;margin-top:4px}
+.chapeu{display:inline-block;background:#14150f;color:#f6f3ea;font-family:Inter,sans-serif;font-size:11px;letter-spacing:1.6px;text-transform:uppercase;padding:4px 10px;margin-bottom:12px}
+h2{font-family:'Playfair Display',serif;font-size:36px;line-height:1.1;font-weight:800;margin-bottom:12px}
+h2 em{font-style:normal;background:linear-gradient(transparent 62%,#c8e6a0 62%)}
+.linha-fina{font-size:18px;color:#3b3a31;font-style:italic;border-bottom:1px solid #d6d1c2;padding-bottom:14px;margin-bottom:16px}
+.assinatura{font-family:Inter,sans-serif;font-size:11.5px;color:#5d5a4e;display:flex;justify-content:space-between;margin-bottom:18px}
+p{margin-bottom:14px}
+p.lead::first-letter{float:left;font-family:'Playfair Display',serif;font-size:58px;line-height:.82;padding:6px 8px 0 0;font-weight:900}
+.caixa{background:#fffdf7;border:1px solid #d6d1c2;padding:16px 18px;margin:20px 0}
+.caixa h3{font-family:Inter,sans-serif;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:#5d5a4e;margin-bottom:10px}
+.rev{border-left:3px solid #c8e6a0;padding-left:12px;margin-bottom:14px}
+.rev .est{color:#e0a800;letter-spacing:2px;font-size:14px}
+.rev p{margin:4px 0 2px;font-size:17px}
+.rev .quem{font-family:Inter,sans-serif;font-size:12px;color:#5d5a4e;font-style:italic}
+.dado{display:flex;gap:14px;flex-wrap:wrap;margin:18px 0}
+.dado div{flex:1;min-width:150px;background:#14302b;color:#f2f0e6;padding:14px 16px}
+.dado b{display:block;font-family:'Playfair Display',serif;font-size:30px;line-height:1}
+.dado span{font-family:Inter,sans-serif;font-size:11.5px;letter-spacing:.6px;opacity:.86}
+.cta{position:sticky;bottom:0;background:#f6f3ea;padding:14px 0 6px;margin-top:26px;border-top:1px solid #d6d1c2}
+.btn{display:block;background:#25d366;color:#0b3b22;text-align:center;font-family:Inter,sans-serif;font-weight:700;font-size:19px;text-decoration:none;padding:17px 18px;border-radius:9px;box-shadow:0 6px 18px rgba(37,211,102,.32)}
+.btn small{display:block;font-weight:400;font-size:13px;opacity:.82;margin-top:3px}
+.rodape{font-family:Inter,sans-serif;font-size:11.5px;color:#5d5a4e;border-top:1px solid #d6d1c2;margin-top:22px;padding-top:12px}
+@media(max-width:520px){.masthead h1{font-size:31px}h2{font-size:29px}body{font-size:17px}}
+
+.foto{margin:18px 0}
+.foto img{width:100%;display:block;border:1px solid #d6d1c2}
+.foto figcaption,.tira figcaption{font-family:Inter,sans-serif;font-size:12px;color:#5d5a4e;padding-top:6px;line-height:1.45}
+.tira{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.tira img{width:100%;height:180px;object-fit:cover;display:block;border:1px solid #d6d1c2}
+@media(max-width:520px){.tira{grid-template-columns:1fr 1fr}.tira figure:last-child{display:none}.tira img{height:140px}}
+  img,figure{max-width:100%;height:auto}
+  *{overflow-wrap:anywhere}
+  html,body{max-width:100%;overflow-x:hidden}
+.passos{counter-reset:p;margin:10px 0 0}
+.passos li{list-style:none;position:relative;padding:0 0 12px 34px;font-size:16.5px;line-height:1.5}
+.passos li::before{counter-increment:p;content:counter(p);position:absolute;left:0;top:1px;width:23px;height:23px;background:#14302b;color:#f2f0e6;border-radius:50%;font-family:Inter,sans-serif;font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.preco{margin-top:12px;padding-top:11px;border-top:1px dashed #cfc9b8;font-size:16.5px}
+.preco b{font-size:19px}
+.form-b{background:#14302b;color:#f2f0e6;padding:18px 18px 20px;margin:22px 0 0}
+.form-b h3{font-family:Inter,sans-serif;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:#9dc7b4;margin-bottom:4px}
+.form-b .sub-f{font-family:Inter,sans-serif;font-size:13.5px;color:#cfe0d6;margin-bottom:14px;line-height:1.45}
+.campo{margin-bottom:14px}
+.campo label{display:block;font-family:Inter,sans-serif;font-size:14px;font-weight:600;margin-bottom:7px}
+.ops{display:flex;flex-wrap:wrap;gap:7px}
+.op{font-family:Inter,sans-serif;font-size:14.5px;padding:9px 13px;border:1px solid #4d7568;background:#1b3b34;color:#eaf2ee;border-radius:7px;cursor:pointer;user-select:none}
+.op[aria-pressed="true"]{background:#25d366;border-color:#25d366;color:#08331d;font-weight:700}
+.aviso-f{font-family:Inter,sans-serif;font-size:12.5px;color:#a9c4b8;margin-top:2px;line-height:1.45}
+.fora{background:#5c1f1f;border:1px solid #8d3a3a;color:#ffe3e3;font-family:Inter,sans-serif;font-size:14px;line-height:1.5;padding:12px 14px;border-radius:7px;margin:4px 0 12px}
+.btn.off{background:#c8ccc9;color:#6b706d;box-shadow:none;pointer-events:none}
+
+.so-a,.so-b,.so-c{display:none}
+body.v-a .so-a,body.v-b .so-b,body.v-c .so-c{display:block}
+body.v-c .folha{padding-bottom:26px}
+body.v-c .conv{font-family:Inter,sans-serif}
+.promessa{font-family:'Playfair Display',serif;font-weight:900;font-size:37px;line-height:1.08;letter-spacing:-.7px;margin:4px 0 12px}
+.promessa em{font-style:normal;background:linear-gradient(transparent 58%,#c8e6a0 58%)}
+.sub-p{font-family:Inter,sans-serif;font-size:17.5px;line-height:1.5;color:#3b3a31;margin-bottom:18px}
+.custo{background:#fffdf7;border:1px solid #d6d1c2;border-left:4px solid #8d2b2b;padding:15px 16px;margin:20px 0}
+.custo h3{font-family:Inter,sans-serif;font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:#8d2b2b;margin-bottom:9px}
+.custo ul{list-style:none;font-family:Inter,sans-serif;font-size:16px;line-height:1.75}
+.custo li::before{content:"×";color:#8d2b2b;font-weight:700;margin-right:8px}
+.virada{background:#14302b;color:#f2f0e6;padding:18px 18px;margin:22px 0;font-family:Inter,sans-serif;font-size:18px;line-height:1.5}
+.virada b{background:#25d366;color:#08331d;padding:1px 6px}
+.blococ{margin:22px 0}
+.blococ h3{font-family:'Playfair Display',serif;font-size:25px;font-weight:900;line-height:1.15;margin-bottom:9px;letter-spacing:-.4px}
+.blococ p{font-family:Inter,sans-serif;font-size:16.5px;line-height:1.6;margin-bottom:9px}
+.obj{border-top:1px solid #d6d1c2;padding-top:13px;margin-top:13px}
+.obj p:first-child{font-weight:700;font-family:Inter,sans-serif;font-size:16.5px;margin-bottom:5px}
+.mini-cta{display:block;background:#25d366;color:#0b3b22;text-align:center;font-family:Inter,sans-serif;font-weight:700;font-size:17.5px;text-decoration:none;padding:15px 16px;border-radius:9px;margin:20px 0}
+</style>
+</head>
+<body>
+<div class="pub">Conteúdo publicitário · Doutor DM2 Diabetes Vitória</div>
+<div class="folha">
+  <div class="top"><span><b>Edição especial</b> · Diabetes tipo 2</span><span id="dataHoje">Vitória (ES)</span><span>Ano 1 · N° 1</span></div>
+  <div class="masthead"><h1>Diário da Saúde</h1><div class="tag">Mais que controle, método inteligente</div></div>
+
+  <span class="chapeu">Diabetes tipo 2</span>
+  <h2 class="so-a so-b">Toma o remédio, corta o açúcar, faz o exame, e a <em>glicose não baixa</em></h2>
+  <div class="linha-fina so-a so-b">O que quase ninguém explica é que o número alto é consequência, não a causa. E é por isso que a mesma rotina, ano após ano, entrega o mesmo resultado.</div>
+  <div class="assinatura"><span>Da Redação · Vitória</span><span id="cityName" style="display:none">Vitória</span><span>Saúde · Página 1</span></div>
+
+  <figure class="foto">
+    <img src="fachada.jpg" alt="Unidade Doutor DM2 Vitória, no Bento Ferreira" loading="eager">
+    <figcaption>A unidade de Vitória fica na Rua Hélio Marconi, 42, no Bento Ferreira. Atende só diabetes tipo 2 e pré-diabetes.</figcaption>
+  </figure>
+<div class="conv so-c">
+  <div class="promessa">O objetivo não é fazer sua glicose baixar no exame.
+    É <em>diminuir a quantidade de remédio que você toma</em>.</div>
+  <div class="sub-p">Se faz anos que você toma o comprimido certinho, corta o açúcar, faz o exame
+    de três em três meses e o número volta parecido, o problema provavelmente não é você.
+    É o alvo.</div>
+
+  <a class="mini-cta" href="#agendar">Quero saber se tenho perfil</a>
+
+  <div class="custo">
+    <h3>O que costuma acontecer com quem segue só controlando o número</h3>
+    <ul>
+      <li>A dose aumenta a cada ano, e o remédio vira rotina para o resto da vida</li>
+      <li>Aparecem o formigamento nos pés e nas mãos, o sono ruim, o cansaço que não passa</li>
+      <li>A conta chega de outro jeito: rim, visão, coração, circulação</li>
+      <li>E o exame seguinte volta igual, o que faz muita gente simplesmente desistir</li>
+    </ul>
+  </div>
+
+  <div class="virada">Controlar a glicose é enxugar o chão. <b>Aqui a gente fecha a torneira.</b>
+    O acompanhamento persegue a causa que faz o número subir, e o placar não é o exame:
+    é quanto de medicação você ainda precisa tomar.</div>
+
+  <div class="blococ">
+    <h3>Quem já passou por isso na unidade de Vitória</h3>
+    <p>Não somos nós dizendo. São avaliações públicas no Google, com nota 5,0.</p>
+  </div>
+</div>
+  <p class="lead so-a so-b">Quem convive com diabetes tipo 2 conhece a rotina: o comprimido todo dia, a dieta que aperta, o exame de três em três meses. E o número que volta parecido. Depois de alguns anos assim, muita gente conclui que o problema é falta de esforço, quando o problema costuma ser outro.</p>
+  <p class="so-a">A glicose alta é o sintoma que aparece no exame. Por trás dela está a <b>resistência à insulina</b>: o corpo até produz o hormônio, mas as células respondem cada vez menos. Tratar só o número é enxugar o chão com a torneira aberta, e é isso que faz a dose subir a cada ano.</p>
+  <p class="so-b">O que quase ninguém pergunta é o que mudaria de verdade no seu dia. Não o número do exame: <b>a quantidade de comprimido que você toma</b>. É isso que o acompanhamento persegue nos primeiros 90 dias, e é isso que aparece escrito nas avaliações da unidade, abaixo.</p>
+
+  <div class="dado so-a so-b">
+    <div><b>3 em 3 meses</b><span>é o intervalo em que a maioria só descobre que nada mudou</span></div>
+    <div><b>Semana a semana</b><span>é o intervalo do acompanhamento na unidade de Vitória</span></div>
+  </div>
+
+  <p class="so-a so-b">Na Doutor DM2 de Vitória, no Bento Ferreira, a avaliação começa por um exame completo, não pela glicemia isolada. A partir dele a equipe monta um plano por pessoa (alimentação, suplementação e o que mais fizer sentido no caso) e o paciente volta toda semana para ajustar o que não funcionou. É esse retorno curto que aparece nas avaliações públicas da unidade.</p>
+
+  <div class="tira">
+    <figure><img src="equipe.jpg" alt="Atendimento na unidade de Vitória" loading="lazy"><figcaption>Atendimento na unidade</figcaption></figure>
+    <figure><img src="paciente.jpg" alt="Paciente da unidade de Vitória" loading="lazy"><figcaption>Paciente acompanhado semana a semana</figcaption></figure>
+    <figure><img src="fachada2.jpg" alt="Fachada da unidade" loading="lazy"><figcaption>Unidade física, no Bento Ferreira</figcaption></figure>
+  </div>
+  <div class="caixa">
+    <h3>Avaliações no Google · nota 5,0 com 13 avaliações</h3>
+    <div class="rev"><div class="est">★★★★★</div><p>“Estou me sentindo muito melhor, bem mais disposta, e já estou diminuindo as doses do meu remédio! As meninas da clínica são maravilhosas, super simpáticas! Recomendo muito a clínica!”</p><div class="quem">Deusmira · avaliação no Google</div></div>
+    <div class="rev"><div class="est">★★★★★</div><p>“Desde que comecei, há 1 mês, já estou me sentindo 70% melhor, ou até mais. Meu sono melhorou, os inchaços acabaram, os pés e as mãos pararam de formigar, ansiedade está melhor. Aqui me sinto acolhido.”</p><div class="quem">Elias · avaliação no Google</div></div>
+    <div class="rev"><div class="est">★★★★★</div><p>“Me sinto muito bem quando chego na clínica, com mais disposição e mais animado. No início pensava que era golpe, e hoje sou a prova viva que não é!”</p><div class="quem">Joatan · avaliação no Google</div></div>
+  </div>
+<div class="conv so-c">
+  <div class="blococ">
+    <h3>O que passa pela cabeça de quase todo mundo antes de vir</h3>
+
+    <div class="obj">
+      <p>"Isso não é golpe?"</p>
+      <p>É a frase que mais aparece, e um paciente escreveu exatamente isso na avaliação dele:
+      <i>"no início pensava que era golpe, e hoje sou a prova viva que não é"</i>. Por isso nada
+      aqui começa com proposta. Começa com uma avaliação presencial, na clínica, onde a equipe
+      olha os seus exames e diz o que dá e o que não dá para fazer no seu caso.</p>
+    </div>
+
+    <div class="obj">
+      <p>"Eu já tentei de tudo."</p>
+      <p>Provavelmente tentou mesmo, e sempre mirando o número do exame. A diferença aqui é o
+      retorno toda semana: o plano é ajustado com o que funcionou e o que não funcionou nos seus
+      sete dias, não de três em três meses.</p>
+    </div>
+
+    <div class="obj">
+      <p>"E quanto custa?"</p>
+      <p>A avaliação custa <b>R$ 150</b>, e inclui o rastreamento metabólico, a análise de risco e
+      o plano por escrito. Se você não tiver perfil, a equipe diz na hora, e não existe proposta
+      nenhuma depois. Quem tem perfil recebe os valores do acompanhamento pessoalmente, com tudo
+      explicado antes de decidir qualquer coisa.</p>
+    </div>
+
+    <div class="obj">
+      <p>"Vou ter que parar meu remédio por conta própria?"</p>
+      <p>Não. Nada é retirado por conta própria e nada é feito sem acompanhamento. A redução, quando
+      acontece, é acompanhada de perto pela equipe, com exame na mão.</p>
+    </div>
+  </div>
+  <a class="mini-cta" href="#agendar">Quero agendar minha avaliação</a>
+</div>
+<p class="so-a so-b"><b>Para quem é.</b> O acompanhamento é para quem tem diabetes tipo 2 ou pré-diabetes e quer sair do controle pelo número. Nem todo mundo tem perfil, e é justamente isso que a avaliação inicial define, antes de qualquer proposta.</p>
+  <p class="so-a so-b"><b>Como começa.</b> Você fala com a equipe no WhatsApp, conta seu caso em poucas linhas e recebe as datas disponíveis. A avaliação é presencial, na unidade de Vitória.</p>
+
+<div class="caixa so-b so-c" id="agendar">
+    <h3>O que acontece na avaliação</h3>
+    <ol class="passos">
+      <li>A equipe ouve seu caso e olha os exames que você já tem, mesmo os antigos.</li>
+      <li>É feito o rastreamento metabólico, que mostra o que está por trás da glicose alta.</li>
+      <li>Você recebe a análise de risco e um plano por escrito, feito para o seu quadro.</li>
+      <li>Dura cerca de uma hora, é presencial, e você sai de lá sabendo se tem perfil para o método.</li>
+    </ol>
+    <div class="preco">A avaliação custa <b>R$ 150</b>, com tudo isso incluso. Se você não tiver
+    perfil, a equipe diz na hora, e não existe proposta nenhuma depois.</div>
+  </div>
+<div class="form-b so-b so-c" id="formB">
+    <h3>Agende sua avaliação</h3>
+    <div class="sub-f">Três toques e a equipe já recebe seu caso com a sua preferência de horário.</div>
+    <div class="campo"><label>1. Qual é o seu caso?</label>
+      <div class="ops" data-campo="caso">
+        <span class="op" role="button" aria-pressed="false">Tenho diabetes tipo 2</span>
+        <span class="op" role="button" aria-pressed="false">Tenho pré-diabetes</span>
+        <span class="op" role="button" aria-pressed="false">É para um familiar</span>
+      </div></div>
+    <div class="campo"><label>2. Você está em Vitória ou região?</label>
+      <div class="ops" data-campo="regiao">
+        <span class="op" role="button" aria-pressed="false">Vitória</span>
+        <span class="op" role="button" aria-pressed="false">Serra</span>
+        <span class="op" role="button" aria-pressed="false">Outra cidade</span>
+      </div></div>
+    <div class="campo"><label>3. Qual dia fica melhor?</label>
+      <div class="ops" data-campo="dia" id="opsDia"></div></div>
+    <div class="campo"><label>4. E o turno?</label>
+      <div class="ops" data-campo="turno">
+        <span class="op" role="button" aria-pressed="false">Manhã (8h às 11h)</span>
+        <span class="op" role="button" aria-pressed="false">Tarde (13h às 17h)</span>
+        <span class="op" role="button" aria-pressed="false">Tanto faz</span>
+      </div></div>
+    <div class="fora" id="avisoFora" hidden><b>Esta unidade atende presencialmente apenas quem está em Vitória ou na Serra.</b> A avaliação é feita na clínica, na Rua Hélio Marconi, 42, e por isso não conseguimos atender quem mora em outra cidade. A rede Doutor DM2 tem mais de 45 unidades pelo Brasil, incluindo uma em Vila Velha: procure a mais perto de você.</div>
+    <div class="aviso-f">A equipe confirma a disponibilidade no WhatsApp. A avaliação é presencial,
+    na Rua Hélio Marconi, 42, Bento Ferreira.</div>
+  </div>
+  <div class="cta">
+    <a class="btn so-a" id="btnWpp" href="#">Falar com a equipe no WhatsApp<small>A gente confirma endereço, horário e o que levar</small></a>
+    <a class="btn so-b so-c" id="btnWppB" href="#">Ver os horários desta semana<small>A equipe responde com as datas livres da unidade de Vitória</small></a>
+  </div>
+
+  <div class="rodape">
+    Doutor DM2 Diabetes · Rua Hélio Marconi, 42, Bento Ferreira, Vitória (ES).<br>
+    Conteúdo publicitário produzido pela unidade. <b>Diário da Saúde</b> é um nome fictício, usado apenas como formato editorial desta peça. Não é um veículo de imprensa.<br>
+    Avaliações reproduzidas do perfil público da unidade no Google (nota 5,0 · 13 avaliações). Resultados variam de pessoa para pessoa e dependem de avaliação clínica individual.
+  </div>
+</div>
+
+<script>
+(function(){
+  var MESES=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+  var DIAS=['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'];
+  var d=new Date();
+  document.getElementById('dataHoje').textContent='Vitória, '+DIAS[d.getDay()]+', '+d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear();
+  var p=new URLSearchParams(location.search);
+  /* Teste A/B da LP (25/09/2026). Sorteio no CLIENTE, mesma URL: dois anúncios com URLs
+     diferentes fariam o Meta desbalancear a entrega e viciar o teste.
+     A = controle · B = desejo concreto (menos método) + o que acontece na avaliação + R$ 150 + horário.
+     O código [LP-A]/[LP-B] vai na saudação do WhatsApp: é o que permite seguir o lead até o
+     agendamento no CRM, já que o ZapClinic não recebe parâmetro de URL. */
+  var VAR=null;
+  try{VAR=localStorage.getItem('lp_var')}catch(e){}
+  if(['a','b','c'].indexOf(p.get('v'))>=0){VAR=p.get('v').toUpperCase()}
+  if(['A','B','C'].indexOf(VAR)<0){VAR=['A','B','C'][Math.floor(Math.random()*3)]}
+  try{localStorage.setItem('lp_var',VAR)}catch(e){}
+  document.body.classList.add('v-'+VAR.toLowerCase());
+  window.__LP_VAR=VAR;
+  var msg=p.get('msg')||('[LP-'+VAR+'] Li a matéria e quero agendar minha avaliação na Doutor DM2 Vitória.');
+  var url='https://wa.me/5527995788381?text='+encodeURIComponent(msg);
+  var b=document.getElementById('btnWpp');
+  var bB=document.getElementById('btnWppB');
+
+  /* ── Variante B: 4 toques que viram a própria mensagem do WhatsApp ──────────────
+     Por que PREFERÊNCIA e não horário exato: a agenda real de Vitória vive no
+     nonoelemento (sessão única, credencial da SDR) e não pode ser consultada pelo
+     navegador. Oferecer "quinta 15h" sem lastro produziria o "não tenho esse horário"
+     logo no primeiro contato, numa unidade que já cancela 70% das avaliações.
+     A pergunta da REGIÃO existe porque lead de fora é queixa medida da praça: ela não
+     bloqueia ninguém, só chega declarada para a SDR priorizar. */
+  var resp={};
+  function proximosDias(n){
+    var nomes=['domingo','segunda','terça','quarta','quinta','sexta','sábado'],out=[],d=new Date();
+    while(out.length<n){
+      d.setDate(d.getDate()+1);
+      if(d.getDay()===0||d.getDay()===6)continue;      // agenda real: 141 avaliações em 90
+                                                       // dias, ZERO no sábado e no domingo
+      out.push({rot:nomes[d.getDay()]+' '+d.getDate()+'/'+(d.getMonth()+1),
+                val:nomes[d.getDay()]+', '+d.getDate()+'/'+(d.getMonth()+1)});
+    }
+    return out;
+  }
+  var opsDia=document.getElementById('opsDia');
+  if(opsDia){
+    proximosDias(5).forEach(function(o){
+      var e=document.createElement('span');
+      e.className='op';e.setAttribute('role','button');e.setAttribute('aria-pressed','false');
+      e.textContent=o.rot;e.dataset.val=o.val;opsDia.appendChild(e);
+    });
+  }
+  document.querySelectorAll('.form-b .ops').forEach(function(grupo){
+    grupo.addEventListener('click',function(ev){
+      var op=ev.target.closest('.op'); if(!op)return;
+      grupo.querySelectorAll('.op').forEach(function(x){x.setAttribute('aria-pressed','false')});
+      op.setAttribute('aria-pressed','true');
+      resp[grupo.dataset.campo]=op.dataset.val||op.textContent.trim();
+      atualizar();
+      try{ if(window.dm2Track) window.dm2Track('form_option',{campo:grupo.dataset.campo,valor:resp[grupo.dataset.campo],variante:VAR}); }catch(e){}
+    });
+  });
+
+  function montarMsg(){
+    if(VAR!=='B') return msg;
+    var l=['[LP-B] Vi a matéria e quero agendar minha avaliação na Doutor DM2 Vitória.'];
+    if(resp.caso)   l.push('• '+resp.caso);
+    if(resp.regiao) l.push('• Estou em: '+resp.regiao);
+    if(resp.dia||resp.turno){
+      l.push('• Prefiro: '+[resp.dia,resp.turno&&resp.turno.toLowerCase()].filter(Boolean).join(', '));
+    }
+    return l.join('\n');
+  }
+  /* Regra da unidade (Elaine, 25/09): atende presencialmente SÓ Vitória e Serra. Quem marca
+     "Outra cidade" recebe o aviso e o botão trava — mandar esse lead para o WhatsApp só produz
+     a conversa que a franqueada já reclama ("lead de fora"). E as 4 respostas são obrigatórias. */
+  var OBRIG=['caso','regiao','dia','turno'];
+  function atualizar(){
+    var u='https://wa.me/5527995788381?text='+encodeURIComponent(montarMsg());
+    [b,bB].forEach(function(el){ if(el) el.href=u; });
+    if(VAR!=='B'||!bB) return;
+    var fora   = resp.regiao==='Outra cidade';
+    var faltam = OBRIG.filter(function(k){ return !resp[k]; }).length;
+    var aviso  = document.getElementById('avisoFora');
+    if(aviso) aviso.hidden = !fora;
+    if(fora){
+      bB.classList.add('off');
+      bB.firstChild.nodeValue='Esta unidade não atende a sua cidade';
+      bB.querySelector('small').textContent='O atendimento é presencial, em Vitória e na Serra';
+      try{ if(window.dm2Track) window.dm2Track('fora_de_area',{variante:VAR}); }catch(e){}
+      return;
+    }
+    bB.classList.toggle('off', faltam>0);
+    bB.firstChild.nodeValue = faltam>0 ? 'Responda as 4 perguntas acima'
+                                       : 'Ver os horários desta semana';
+    bB.querySelector('small').textContent = faltam>0
+      ? (faltam===1 ? 'Falta 1 resposta' : 'Faltam '+faltam+' respostas')
+      : 'Você já vai com a sua preferência escrita na mensagem';
+  }
+
+  [b,bB].forEach(function(el){
+    if(!el)return;
+    el.href=url;
+    el.addEventListener('click',function(){
+      try{ if(window.dm2Track) window.dm2Track('whatsapp_click',{variante:VAR,respostas:resp}); }catch(e){}
+    });
+  });
+  atualizar();
+})();
+</script>
+<script>
+/*  DM2 LP Tracker — envia eventos pro Supabase  */
+(function(){
+
+// === EXCLUSAO DE ACESSOS INTERNOS ===
+// Cookie de exclusao: acesse qualquer LP com ?exclude=seven pra nunca ser contabilizada
+var params=new URLSearchParams(location.search);
+if(params.get('exclude')==='seven'){localStorage.setItem('dm2_exclude','true');return}
+if(localStorage.getItem('dm2_exclude')==='true')return;
+
+// Pra voltar a ser contabilizada: acesse com ?include=seven
+if(params.get('include')==='seven'){localStorage.removeItem('dm2_exclude')}
+
+// === EXCLUSAO DE BOTS ===
+var ua=navigator.userAgent||'';
+if(/bot|crawl|spider|slurp|facebookexternalhit|Facebot|MetaInspector|WhatsApp|Googlebot|bingbot|GTmetrix|Lighthouse|HeadlessChrome|PhantomJS|Prerender|Screaming Frog/i.test(ua))return;
+
+var SUPA_URL='https://eeakqgsnhbrzvkwskkgv.supabase.co';
+var SUPA_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlYWtxZ3NuaGJyenZrd3Nra2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzEzMDgsImV4cCI6MjA4OTUwNzMwOH0.qA5ZbZPxmq62affukWSQT58lmnqaWI1_OWYTCoCfoks';
+
+// Session ID unico
+var sid=sessionStorage.getItem('dm2sid');
+if(!sid){sid='s_'+Math.random().toString(36).substr(2,9)+'_'+Date.now();sessionStorage.setItem('dm2sid',sid)}
+var UNIDADE=document.getElementById('cityName')?document.getElementById('cityName').textContent.trim():'desconhecido';
+var H_PARAM=params.get('h')||'default';
+var UTM_SRC=params.get('utm_source')||'';
+var UTM_MED=params.get('utm_medium')||'';
+var UTM_CAMP=params.get('utm_campaign')||'';
+var UTM_CONT=params.get('utm_content')||'';
+var UTM_TERM=params.get('utm_term')||'';
+var DEVICE=window.innerWidth<768?'mobile':(window.innerWidth<1024?'tablet':'desktop');
+var GENERO=location.pathname.indexOf('/mulheres/')!==-1?'mulher':'homem';
+var startTime=Date.now();
+
+// Classificar origem do trafego
+function getTrafficSource(){
+    if(UTM_SRC)return UTM_MED==='cpc'||UTM_MED==='paid'||UTM_MED==='ppc'?'pago':'pago';
+    var ref=document.referrer||'';
+    if(!ref)return 'direto';
+    if(ref.match(/google\.|bing\.|yahoo\.|duckduckgo\./i))return 'organico';
+    if(ref.match(/facebook\.|instagram\.|fb\.|fbclid/i))return UTM_SRC?'pago':'social_organico';
+    if(ref.match(/t\.co|twitter\.|tiktok\.|youtube\./i))return 'social_organico';
+    return 'referral';
+}
+var TRAFFIC_SOURCE=getTrafficSource();
+
+// Helper pra enviar pro Supabase
+function send(table,data){
+    try{
+        var xhr=new XMLHttpRequest();
+        xhr.open('POST',SUPA_URL+'/rest/v1/'+table,true);
+        xhr.setRequestHeader('Content-Type','application/json');
+        xhr.setRequestHeader('apikey',SUPA_KEY);
+        xhr.setRequestHeader('Authorization','Bearer '+SUPA_KEY);
+        xhr.setRequestHeader('Prefer','return=minimal');
+        xhr.send(JSON.stringify(data));
+    }catch(e){}
+}
+
+// Mapa unidade → estado
+var ESTADOS={'Anapolis':'GO','Brasilia':'DF','Cachoeiro de Itapemirim':'ES','Campo Grande':'MS',
+'Campos dos Goytacazes':'RJ','Duque de Caxias':'RJ','Colatina':'ES','Cuiaba':'MT','Eunapolis':'BA',
+'Governador Valadares':'MG','Imperatriz':'MA','Jundiai':'SP','Lapa':'SP','Linhares':'ES',
+'Marilia':'SP','Maringa':'PR','Montes Claros':'MG','Osasco':'SP','Parauapebas':'PA','Recife':'PE',
+'Sao Jose do Rio Preto':'SP','Santo Amaro':'SP','Sao Luis':'MA','Vila Velha':'ES','Vitoria':'ES'};
+var ESTADO=ESTADOS[UNIDADE]||'';
+
+// 1. PAGEVIEW com geolocalização do IP
+// Busca IP + cidade + lat/long via API gratuita
+function sendPageview(geo){
+    geo=geo||{};
+    var cc=geo.country_code||geo.countryCode||'';
+    if(cc&&cc!=='BR')return;
+    send('page_events',{
+        session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'pageview',valor:location.pathname,
+        utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
+        headline_param:H_PARAM,device:DEVICE,traffic_source:TRAFFIC_SOURCE,
+        user_agent:navigator.userAgent.substr(0,200),
+        referrer:document.referrer.substr(0,200),
+        ip:geo.ip||geo.query||'',cidade_real:geo.city||'',estado_real:geo.region||geo.regionName||'',
+        lat:geo.latitude||geo.lat||null,lon:geo.longitude||geo.lon||null
+    });
+}
+function tryGeoFallback(){
+    try{
+        var fb=new XMLHttpRequest();
+        fb.open('GET','https://ip-api.com/json/?fields=status,country,countryCode,regionName,city,lat,lon,query',true);
+        fb.timeout=4000;
+        fb.onload=function(){
+            var geo={};try{geo=JSON.parse(fb.responseText)}catch(e){}
+            if(geo.status==='success'){geo.country_code=geo.countryCode;geo.ip=geo.query;geo.region=geo.regionName;geo.latitude=geo.lat;geo.longitude=geo.lon}
+            sendPageview(geo);
+        };
+        fb.onerror=fb.ontimeout=function(){sendPageview({})};
+        fb.send();
+    }catch(e){sendPageview({})}
+}
+try{
+    var geoXhr=new XMLHttpRequest();
+    geoXhr.open('GET','https://ipapi.co/json/',true);
+    geoXhr.timeout=4000;
+    geoXhr.onload=function(){
+        var geo={};try{geo=JSON.parse(geoXhr.responseText)}catch(e){}
+        if(geo.ip||geo.city){sendPageview(geo)}else{tryGeoFallback()}
+    };
+    geoXhr.onerror=geoXhr.ontimeout=function(){tryGeoFallback()};
+    geoXhr.send();
+}catch(e){tryGeoFallback()}
+
+// 2. SCROLL TRACKING por secao
+var sections=['hero','sintomas','central','equipe','metodo','comp','deps','faq','quiz','ctaf','cuidadora'];
+var sectionTimers={};
+var sectionSent={};
+
+var scrollObs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+        var id=e.target.id||e.target.className.split(' ')[0];
+        if(e.isIntersecting){
+            sectionTimers[id]=Date.now();
+        }else if(sectionTimers[id]&&!sectionSent[id]){
+            var tempo=Math.round((Date.now()-sectionTimers[id])/1000);
+            if(tempo>=2){
+                send('scroll_events',{session_id:sid,unidade:UNIDADE,secao:id,tempo_segundos:tempo,visivel:true});
+                sectionSent[id]=true;
+            }
+        }
+    });
+},{threshold:0.3});
+
+sections.forEach(function(s){
+    var el=document.getElementById(s)||document.querySelector('.'+s);
+    if(el)scrollObs.observe(el);
+});
+
+// 3. MAX SCROLL DEPTH
+var maxScroll=0;
+window.addEventListener('scroll',function(){
+    var pct=Math.round((window.scrollY/(document.body.scrollHeight-window.innerHeight))*100);
+    if(pct>maxScroll)maxScroll=pct;
+});
+
+// Enviar scroll depth ao sair
+function sendExit(){
+    var tempoTotal=Math.round((Date.now()-startTime)/1000);
+    send('page_events',{
+        session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'exit',
+        valor:maxScroll+'%|'+tempoTotal+'s',
+        headline_param:H_PARAM,utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,device:DEVICE,traffic_source:TRAFFIC_SOURCE
+    });
+    // Enviar secoes pendentes
+    sections.forEach(function(s){
+        if(sectionTimers[s]&&!sectionSent[s]){
+            var tempo=Math.round((Date.now()-sectionTimers[s])/1000);
+            if(tempo>=1){
+                send('scroll_events',{session_id:sid,unidade:UNIDADE,secao:s,tempo_segundos:tempo,visivel:true});
+            }
+        }
+    });
+}
+document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')sendExit()});
+window.addEventListener('beforeunload',sendExit);
+
+// 4. CLICK TRACKING
+document.addEventListener('click',function(e){
+    var el=e.target.closest('a,button,.chk');
+    if(!el)return;
+
+    var secao='';
+    var parent=el.closest('section,.hero,.sintomas,.central,.metodo,.comp,.deps,.faq,.quiz,.ctaf,.cuidadora,.equipe,.valor');
+    if(parent)secao=parent.id||parent.className.split(' ')[0];
+
+    var elemento='';
+    if(el.classList.contains('chk'))elemento='checklist_item';
+    else if(el.classList.contains('btn-w'))elemento='cta_primary';
+    else if(el.classList.contains('btn-g'))elemento='cta_secondary';
+    else if(el.classList.contains('hdr-btn'))elemento='cta_header';
+    else if(el.classList.contains('ctaf-btn'))elemento='cta_final_wpp';
+    else if(el.classList.contains('faq-q'))elemento='faq_'+el.textContent.substr(0,40).replace(/[^a-zA-Z0-9]/g,'_');
+    else if(el.closest('.wpp'))elemento='wpp_float';
+    else if(el.classList.contains('qf-submit'))elemento='quiz_submit';
+    else elemento=el.tagName.toLowerCase()+'_'+(secao||'page')+'_'+(el.textContent||'').substr(0,20).replace(/[^a-zA-Z0-9]/g,'').toLowerCase();
+
+    if(elemento){
+        send('click_events',{session_id:sid,unidade:UNIDADE,elemento:elemento,secao:secao,headline_param:H_PARAM,utm_campaign:UTM_CAMP});
+    }
+
+    // Track WhatsApp clicks como conversao — com UTMs completos e telefone
+    if(elemento==='cta_final_wpp'||elemento==='wpp_float'){if(typeof fbq==='function')fbq('track','Contact');
+        // Extrair telefone do link wa.me
+        var wppLink=el.closest('a')?el.closest('a').href:(el.href||'');
+        var wppPhone='';
+        var phoneMatch=wppLink.match(/wa\.me\/(\d+)/);
+        if(phoneMatch)wppPhone=phoneMatch[1];
+
+        send('page_events',{
+            session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,
+            evento:'whatsapp_click',valor:wppPhone||elemento,
+            headline_param:H_PARAM,
+            utm_source:UTM_SRC,utm_medium:UTM_MED,
+            utm_campaign:UTM_CAMP,utm_content:UTM_CONT,
+            device:DEVICE,traffic_source:TRAFFIC_SOURCE,
+            referrer:document.referrer.substr(0,200)
+        });
+    }
+});
+
+// 5. CHECKLIST counter
+var lastCheckCount=0;
+setInterval(function(){
+    var n=document.querySelectorAll('.chk.on').length;
+    if(n!==lastCheckCount&&n>0){
+        lastCheckCount=n;
+        send('page_events',{session_id:sid,unidade:UNIDADE,estado:ESTADO,genero:GENERO,evento:'checklist_count',valor:String(n),headline_param:H_PARAM,utm_source:UTM_SRC,utm_medium:UTM_MED,utm_campaign:UTM_CAMP,utm_content:UTM_CONT,device:DEVICE,traffic_source:TRAFFIC_SOURCE});
+    }
+},2000);
+
+// 6. QUIZ SUBMIT — interceptar
+var quizForm=document.getElementById('quizForm');
+if(quizForm){
+    quizForm.addEventListener('submit',function(){
+        var tempoTotal=Math.round((Date.now()-startTime)/1000);
+        var sintomasN=document.querySelectorAll('.chk.on').length;
+        send('quiz_leads',{
+            session_id:sid,
+            unidade:UNIDADE,estado:ESTADO,traffic_source:TRAFFIC_SOURCE,
+            tempo_diabetes:document.getElementById('qTempo')?document.getElementById('qTempo').value:'',
+            principal_queixa:document.getElementById('qDor')?document.getElementById('qDor').value:'',
+            whatsapp:document.getElementById('qPhone')?document.getElementById('qPhone').value:'',
+            headline_param:H_PARAM,
+            utm_source:UTM_SRC,
+            utm_campaign:UTM_CAMP,
+            utm_content:UTM_CONT,
+            sintomas_marcados:sintomasN,
+            scroll_depth_max:maxScroll,
+            tempo_na_pagina:tempoTotal
+        });
+    });
+}
+
+})();
+
+</script>
+</body>
+</html>
