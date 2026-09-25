@@ -478,6 +478,20 @@ fbq('track', 'PageView');
     el.addEventListener('click',function(){
       try{ if(window.dm2Track) window.dm2Track('whatsapp_click',{variante:VAR,respostas:resp}); }catch(e){}
       try{ if(typeof fbq==='function') fbq('track','Contact',{variante:VAR}); }catch(e){}
+      /* LEAD QUALIFICADO = o que a campanha otimiza. Só conta quem cumpre as 3 condições:
+         (1) respondeu as 4 perguntas, (2) está em Vitória ou Serra, (3) foi para o WhatsApp.
+         Mapeado em CompleteRegistration porque CONTACT e LEAD estão indisponíveis no pixel
+         por falta de volume ([[dm2/reference_vitoria_pixel_ca03]]). Quem clica sem qualificar
+         gera Contact, não CompleteRegistration: o algoritmo aprende com o lead certo. */
+      try{
+        var completo = OBRIG.every(function(k){ return !!resp[k]; });
+        var naArea   = resp.regiao==='Vitória' || resp.regiao==='Serra';
+        if(completo && naArea && typeof fbq==='function'){
+          fbq('track','CompleteRegistration',{
+            content_name:'lead-qualificado-vitoria', variante:VAR,
+            caso:resp.caso, regiao:resp.regiao, tempo_remedio:RESP_PORTAO||'não perguntado'});
+        }
+      }catch(e){}
     });
   });
   atualizar();
