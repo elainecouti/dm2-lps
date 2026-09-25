@@ -98,6 +98,19 @@ body.v-c .conv{font-family:Inter,sans-serif}
 .prog-txt{font-family:Inter,sans-serif;font-size:13px;font-weight:700;color:#9dc7b4;white-space:nowrap}
 .campo.ok label::after{content:"✓";color:#25d366;margin-left:7px;font-weight:800}
 .campo label{transition:color .2s}
+
+.transf{background:#fffdf7;border:1px solid #d6d1c2;padding:17px 18px;margin:22px 0}
+.transf h3{font-family:'Playfair Display',serif;font-size:25px;font-weight:900;line-height:1.15;margin-bottom:4px;letter-spacing:-.4px}
+.transf .obs{font-family:Inter,sans-serif;font-size:13.5px;color:#5d5a4e;margin-bottom:13px}
+.tr{display:flex;gap:11px;padding:12px 0;border-top:1px solid #e6e1d4}
+.tr:first-of-type{border-top:0}
+.tr .n{flex:0 0 42px;font-family:'Playfair Display',serif;font-size:30px;font-weight:900;color:#14302b;line-height:1}
+.tr .c{font-family:Inter,sans-serif;font-size:16px;line-height:1.5}
+.tr .c b{display:block;font-size:17px;margin-bottom:2px}
+.tr .c i{display:block;font-size:14.5px;color:#4a5a52;margin-top:5px;font-style:italic}
+.duvida{text-align:center;margin:12px 0 0}
+.duvida a{font-family:Inter,sans-serif;font-size:15px;color:#14302b;text-decoration:underline}
+.duvida small{display:block;font-family:Inter,sans-serif;font-size:12.5px;color:#5d5a4e;margin-top:4px}
 </style>
 </head>
 <body>
@@ -158,6 +171,27 @@ body.v-c .conv{font-family:Inter,sans-serif}
     <figure><img src="equipe.jpg" alt="Atendimento na unidade de Vitória" loading="lazy"><figcaption>Atendimento na unidade</figcaption></figure>
     <figure><img src="paciente.jpg" alt="Paciente da unidade de Vitória" loading="lazy"><figcaption>Paciente acompanhado semana a semana</figcaption></figure>
     <figure><img src="fachada2.jpg" alt="Fachada da unidade" loading="lazy"><figcaption>Unidade física, no Bento Ferreira</figcaption></figure>
+  </div>
+  <div class="transf so-c">
+    <h3>O que costuma mudar nos primeiros 90 dias</h3>
+    <div class="obs">É o que o acompanhamento persegue. Cada caso é um caso, e a avaliação existe
+    justamente para dizer o que dá para esperar no seu.</div>
+    <div class="tr"><div class="n">01</div><div class="c">
+      <b>Menos remédio</b>A dose deixa de subir e passa a ser revista, sempre com exame na mão e
+      com a equipe acompanhando.
+      <i>"Já estou diminuindo as doses do meu remédio." Deusmira, avaliação no Google</i></div></div>
+    <div class="tr"><div class="n">02</div><div class="c">
+      <b>O corpo volta a responder</b>Sono, disposição, inchaço, o formigamento nos pés e nas mãos.
+      É o que as pessoas notam antes mesmo do exame seguinte.
+      <i>"Há 1 mês já estou me sentindo 70% melhor. Meu sono melhorou, os inchaços acabaram, os pés
+      e as mãos pararam de formigar." Elias, avaliação no Google</i></div></div>
+    <div class="tr"><div class="n">03</div><div class="c">
+      <b>Sair da rota das complicações</b>Rim, visão, coração e circulação são o preço de anos
+      convivendo com a glicose alta. Mudar o alvo é o que tira você desse caminho.</div></div>
+    <div class="tr"><div class="n">04</div><div class="c">
+      <b>Remissão, quando o seu quadro permite</b>É o objetivo do método, não uma promessa para
+      todo mundo. Quem tem perfil descobre isso na avaliação, com exame, antes de decidir
+      qualquer coisa.</div></div>
   </div>
   <div class="caixa">
     <h3>Avaliações no Google · nota 5,0 com 13 avaliações</h3>
@@ -248,6 +282,11 @@ body.v-c .conv{font-family:Inter,sans-serif}
     <a class="btn so-b so-c" id="btnWppB" href="#">Ver os horários desta semana<small>A equipe responde com as datas livres da unidade de Vitória</small></a>
   </div>
 
+    <div class="duvida so-b so-c">
+      <a href="#" id="linkDuvida">Ainda tenho dúvidas e quero falar com a equipe antes</a>
+      <small>A equipe responde do mesmo jeito, sem agendar nada agora</small>
+    </div>
+
   <div class="rodape">
     Doutor DM2 Diabetes · Rua Hélio Marconi, 42, Bento Ferreira, Vitória (ES).<br>
     Conteúdo publicitário produzido pela unidade. <b>Diário da Saúde</b> é um nome fictício, usado apenas como formato editorial desta peça. Não é um veículo de imprensa.<br>
@@ -322,6 +361,20 @@ body.v-c .conv{font-family:Inter,sans-serif}
       try{ if(window.dm2Track) window.dm2Track('cta_para_form',{variante:VAR}); }catch(e){}
     });
   });
+  /* Quem ainda não decidiu NÃO é barrado: 78% do funil da rede se perde justamente entre
+     engajar e pedir para agendar. Ele passa marcado como [LP-x-DUVIDA], para a equipe saber
+     que é conversa e não agendamento, e para dar para medir qual dos dois caminhos agenda mais. */
+  var ld=document.getElementById('linkDuvida');
+  if(ld){
+    ld.addEventListener('click',function(ev){
+      ev.preventDefault();
+      var t='[LP-'+VAR+'-DUVIDA] Vi a matéria da Doutor DM2 Vitória e queria tirar uma dúvida antes de agendar.';
+      if(resp.caso) t+='\n• '+resp.caso;
+      if(resp.regiao) t+='\n• Estou em: '+resp.regiao;
+      try{ if(window.dm2Track) window.dm2Track('whatsapp_click_duvida',{variante:VAR}); }catch(e){}
+      window.open('https://wa.me/5527995788381?text='+encodeURIComponent(t),'_blank');
+    });
+  }
   atualizar();
       try{ if(window.dm2Track) window.dm2Track('form_option',{campo:grupo.dataset.campo,valor:resp[grupo.dataset.campo],variante:VAR}); }catch(e){}
     });
