@@ -329,11 +329,15 @@ fbq('track', 'PageView');
      A = controle · B = desejo concreto (menos método) + o que acontece na avaliação + R$ 150 + horário.
      O código [LP-A]/[LP-B] vai na saudação do WhatsApp: é o que permite seguir o lead até o
      agendamento no CRM, já que o ZapClinic não recebe parâmetro de URL. */
-  var VAR=null;
+  /* O TESTE roda só entre C e D: mesma página, com e sem a pergunta na entrada, o que isola
+     exatamente o efeito do portão. Com o volume de Vitória, 4 braços não decidiriam nada.
+     A e B seguem acessíveis por ?v=a e ?v=b para conferência, mas ficam fora do sorteio. */
+  var BRACOS=['C','D'];
+  var VAR=null, forcado=(p.get('v')||'').toUpperCase();
   try{VAR=localStorage.getItem('lp_var')}catch(e){}
-  if(['a','b','c','d'].indexOf(p.get('v'))>=0){VAR=p.get('v').toUpperCase()}
-  if(['A','B','C','D'].indexOf(VAR)<0){VAR=['A','B','C','D'][Math.floor(Math.random()*4)]}
-  try{localStorage.setItem('lp_var',VAR)}catch(e){}
+  if(BRACOS.indexOf(VAR)<0){VAR=BRACOS[Math.floor(Math.random()*BRACOS.length)]}
+  try{localStorage.setItem('lp_var',VAR)}catch(e){}   // guarda só o braço sorteado
+  if(['A','B','C','D'].indexOf(forcado)>=0){VAR=forcado}   // ?v= manda, e não contamina o sorteio
   document.body.classList.add('v-'+VAR.toLowerCase());
   if(VAR==='D'){document.body.classList.add('trancado')}
   window.__LP_VAR=VAR;
