@@ -374,8 +374,18 @@ fbq('track', 'PageView');
       var op=ev.target.closest('.op'); if(!op)return;
       grupo.querySelectorAll('.op').forEach(function(x){x.setAttribute('aria-pressed','false')});
       op.setAttribute('aria-pressed','true');
+      var primeira = Object.keys(resp).length===0;
       resp[grupo.dataset.campo]=op.dataset.val||op.textContent.trim();
       atualizar();
+      /* funil no pixel: cada etapa vira um evento nomeado, para ler a taxa de uma para a outra
+         no Gerenciador sem depender do Supabase (que está fora). */
+      try{
+        if(typeof fbq==='function'){
+          if(primeira) fbq('trackCustom','EnqueteIniciada',{variante:VAR});
+          if(OBRIG.every(function(k){return !!resp[k]}))
+            fbq('trackCustom','EnqueteCompleta',{variante:VAR,regiao:resp.regiao});
+        }
+      }catch(e){}
       try{ if(window.dm2Track) window.dm2Track('form_option',{campo:grupo.dataset.campo,valor:resp[grupo.dataset.campo],variante:VAR}); }catch(e){}
     });
   });
@@ -397,7 +407,8 @@ fbq('track', 'PageView');
       if(eco) eco.textContent=ECO[RESP_PORTAO]||'';
       document.body.classList.remove('trancado');
       try{ if(window.dm2Track) window.dm2Track('portao',{variante:VAR,resposta:RESP_PORTAO}); }catch(e){}
-      try{ if(typeof fbq==='function') fbq('trackCustom','RespondeuPortao',{variante:VAR}); }catch(e){}
+      try{ if(typeof fbq==='function'){ fbq('trackCustom','EnqueteIniciada',{variante:VAR,etapa:'portao'});
+        fbq('trackCustom','RespondeuPortao',{variante:VAR,resposta:RESP_PORTAO}); } }catch(e){}
       window.scrollTo({top:0,behavior:'smooth'});
       atualizar();
     });
@@ -418,6 +429,7 @@ fbq('track', 'PageView');
   /* Regra da unidade: atende presencialmente SÓ Vitória e Serra. Quem marca "Outra cidade"
      recebe o aviso e o botão trava. As 4 respostas são obrigatórias. */
   var OBRIG=['caso','regiao','dia','turno'];
+  var foraAvisado=false;   // atualizar() roda a cada toque: o evento não pode repetir
   function atualizar(){
     var u='https://wa.me/5527995788381?text='+encodeURIComponent(montarMsg());
     [b,bB].forEach(function(el){ if(el) el.href=u; });
@@ -438,7 +450,11 @@ fbq('track', 'PageView');
       bB.classList.add('off');
       bB.firstChild.nodeValue='Esta unidade não atende a sua cidade';
       bB.querySelector('small').textContent='O atendimento é presencial, em Vitória e na Serra';
-      try{ if(window.dm2Track) window.dm2Track('fora_de_area',{variante:VAR}); }catch(e){}
+      if(!foraAvisado){
+        foraAvisado=true;
+        try{ if(window.dm2Track) window.dm2Track('fora_de_area',{variante:VAR}); }catch(e){}
+        try{ if(typeof fbq==='function') fbq('trackCustom','ForaDeArea',{variante:VAR}); }catch(e){}
+      }
       return;
     }
     bB.classList.toggle('off', faltam>0);
