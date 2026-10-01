@@ -492,10 +492,21 @@ fbq('track', 'PageView');
     });
   }
 
+  /* O clique NÃO pode navegar na hora: com href=wa.me na mesma aba, a página sai antes de a
+     requisição do pixel sair, e Contact/CompleteRegistration se perdiam. Em 30/09 e 01/10 chegaram
+     2 leads [LP-C]/[LP-D] qualificados no ZapClinic e o Meta registrou 0. Agora: segura a
+     navegação, dispara os eventos e abre o WhatsApp 400 ms depois. */
+  var ESPERA_PIXEL_MS=400;
+  var saindo=false;
   [b,bB].forEach(function(el){
     if(!el)return;
     el.href=url;
-    el.addEventListener('click',function(){
+    el.addEventListener('click',function(ev){
+      ev.preventDefault();
+      if(saindo || el.classList.contains('off')) return;
+      saindo=true;
+      var destino=el.href;
+      setTimeout(function(){ window.location.href=destino; saindo=false; }, ESPERA_PIXEL_MS);
       try{ if(window.dm2Track) window.dm2Track('whatsapp_click',{variante:VAR,respostas:resp}); }catch(e){}
       try{ if(typeof fbq==='function') fbq('track','Contact',{variante:VAR}); }catch(e){}
       /* LEAD QUALIFICADO = o que a campanha otimiza. Só conta quem cumpre as 3 condições:
