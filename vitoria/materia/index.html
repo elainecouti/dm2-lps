@@ -341,7 +341,68 @@ fbq('track', 'PageView');
   document.body.classList.add('v-'+VAR.toLowerCase());
   if(VAR==='D'){document.body.classList.add('trancado')}
   window.__LP_VAR=VAR;
-  var msg=p.get('msg')||('[LP-'+VAR+'] Li a matéria e quero agendar minha avaliação na Doutor DM2 Vitória.');
+
+  /* ── REF de atribuição (02/10/2026) ────────────────────────────────────────────
+     O lead sai desta página para o WhatsApp, e o `fbclid` morre nesse salto: o ZapClinic não
+     recebe parâmetro de URL. Sem ele o CAPI só tem telefone (advanced matching) e a atribuição
+     à campanha fica fraca. Então: gera um `ref` curto, guarda AQUI o par ref→fbclid/_fbp, e
+     leva só o `ref` dentro do texto do WhatsApp. Quando o lead aparece no ZapClinic,
+     `clientes/vitoria/capi_lp_materia.py` troca o ref pelo fbc/fbp e manda o evento com
+     atribuição forte.
+
+     🚨 Gravado no CARREGAMENTO, não no clique, e com `sendBeacon`. No clique haveria corrida
+     com a navegação: foi exatamente isso que fez o `fbq('track','Contact')` se perder, porque o
+     botão troca de página na mesma aba e o browser cancela requisição pendente. `sendBeacon`
+     é entregue pelo browser mesmo com a página saindo; o `send()` do tracker usa XHR comum e
+     tem o mesmo problema do pixel. */
+  /* a mesma chave anon que o tracker já usa mais abaixo — é pública por natureza e só tem
+     permissão de INSERT nas tabelas de tracking */
+  var SUPA_KEY_REF='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVlYWtxZ3NuaGJyenZrd3Nra2d2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM5MzEzMDgsImV4cCI6MjA4OTUwNzMwOH0.qA5ZbZPxmq62affukWSQT58lmnqaWI1_OWYTCoCfoks';
+  var LP_REF=null;
+  try{
+    var REF_ALF='abcdefghijkmnpqrstuvwxyz23456789';   // sem l/o/0/1: o ref é lido a olho no CRM
+    LP_REF=(localStorage.getItem('lp_ref')||'');
+    if(!/^[a-z2-9]{5}$/.test(LP_REF)){
+      LP_REF='';
+      var buf=new Uint8Array(5);
+      (window.crypto||window.msCrypto).getRandomValues(buf);
+      for(var i=0;i<5;i++){ LP_REF+=REF_ALF[buf[i]%REF_ALF.length]; }
+      localStorage.setItem('lp_ref',LP_REF);
+
+      var fbclid=p.get('fbclid')||'';
+      var fbp='';
+      try{ var mfbp=document.cookie.match(/(?:^|;\s*)_fbp=([^;]+)/); if(mfbp) fbp=mfbp[1]; }catch(e){}
+      /* formato exigido pelo CAPI: fb.1.<timestamp_ms>.<fbclid> */
+      var fbc=fbclid?('fb.1.'+Date.now()+'.'+fbclid):'';
+      var payload=JSON.stringify([{
+        session_id:LP_REF, unidade:'vitoria', evento:'wpp_ref',
+        valor:JSON.stringify({ref:LP_REF,variante:VAR,fbclid:fbclid,fbc:fbc,fbp:fbp,
+                              url:location.href.slice(0,500)}),
+        utm_campaign:p.get('utm_campaign')||'', utm_content:p.get('utm_content')||'',
+        user_agent:navigator.userAgent, referrer:document.referrer||''
+      }]);
+      var alvo='https://eeakqgsnhbrzvkwskkgv.supabase.co/rest/v1/page_events';
+      /* sendBeacon não manda cabeçalho: a chave anon vai na query string, que o PostgREST
+         aceita. Se o browser não tiver sendBeacon, cai no XHR. */
+      var ok=false;
+      if(navigator.sendBeacon){
+        ok=navigator.sendBeacon(alvo+'?apikey='+encodeURIComponent(SUPA_KEY_REF),
+                                new Blob([payload],{type:'application/json'}));
+      }
+      if(!ok){
+        var xr=new XMLHttpRequest(); xr.open('POST',alvo,true);
+        xr.setRequestHeader('Content-Type','application/json');
+        xr.setRequestHeader('apikey',SUPA_KEY_REF);
+        xr.setRequestHeader('Authorization','Bearer '+SUPA_KEY_REF);
+        xr.setRequestHeader('Prefer','return=minimal');
+        xr.send(payload);
+      }
+    }
+  }catch(e){ LP_REF=null; }
+  window.__LP_REF=LP_REF;
+  function refLinha(){ return LP_REF?('\n(ref: '+LP_REF+')'):''; }
+
+  var msg=p.get('msg')||('[LP-'+VAR+'] Li a matéria e quero agendar minha avaliação na Doutor DM2 Vitória.'+refLinha());
   var url='https://wa.me/5527995788381?text='+encodeURIComponent(msg);
   var b=document.getElementById('btnWpp');
   var bB=document.getElementById('btnWppB');
@@ -427,7 +488,7 @@ fbq('track', 'PageView');
     if(resp.dia||resp.turno){
       l.push('• Prefiro: '+[resp.dia,resp.turno&&resp.turno.toLowerCase()].filter(Boolean).join(', '));
     }
-    return l.join('\n');
+    return l.join('\n')+refLinha();   // o ref fecha a mensagem: é o que liga o lead ao fbclid
   }
 
   /* Regra da unidade: atende presencialmente SÓ Vitória e Serra. Quem marca "Outra cidade"
@@ -487,6 +548,7 @@ fbq('track', 'PageView');
       if(RESP_PORTAO) t+='\n• '+RESP_PORTAO;
       if(resp.caso) t+='\n• '+resp.caso;
       if(resp.regiao) t+='\n• Estou em: '+resp.regiao;
+      t+=refLinha();   // quem vem por dúvida também precisa ser atribuível
       try{ if(window.dm2Track) window.dm2Track('whatsapp_click_duvida',{variante:VAR}); }catch(e){}
       window.open('https://wa.me/5527995788381?text='+encodeURIComponent(t),'_blank');
     });
